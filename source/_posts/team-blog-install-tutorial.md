@@ -21,7 +21,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
 ```bash
 nvm install node
-````
+```
 
 3. 安装 hexo
 
@@ -33,7 +33,7 @@ npm install -g hexo-cli
 
 ### 去 github 注册自己的账号，并添加ssh-key
 
-注册完成后，彩云 @徐金良 告诉我你的用户名
+注册完成后，彩云 @徐金良 告诉我你的注册邮箱
 
 我会把你加到blog项目里
 
@@ -42,13 +42,13 @@ npm install -g hexo-cli
 ### clone blog repo
 
 ```bash
-$ git clone git@github.com:shinemoidev/shinemoidev.github.io.git ~/iOS-team-blog
+git clone git@github.com:shinemoidev/shinemoidev.github.io.git ~/iOS-team-blog
 ```
 
 ### to blog dir
 
 ```bash
-$ cd ~/iOS-team-blog
+cd ~/iOS-team-blog
 ```
 
 ### 安装依赖
@@ -56,8 +56,54 @@ $ cd ~/iOS-team-blog
 #####注意不要用sudo安装, 否则可能会引起其他问题.
 
 ```bash
-$ npm install hexo-deployer-git --save
+npm install hexo-deployer-git --save
 ```
+
+### 写文章
+
+```bash
+hexo n "title"
+```
+
+写文章使用markdown格式，参考[markdown教程](https://www.jianshu.com/p/q81RER)
+
+### 查看文章效果
+
+#### 本地启动hexo server
+
+```bash
+hexo g
+
+hexo s
+```
+
+确认文章效果符合自己的预期
+
+### 提交代码
+
+```bash
+git add .
+
+git commit -s
+
+git push origin master
+```
+
+### 部署blog
+
+```bash
+hexo g
+```
+
+此时若 git status 有变化，则需要做一次提交，提交完成之后再进行部署
+
+```bash
+hexo d
+```
+
+### 查看最终效果
+
+浏览器打开[shinemoidev.github.io](https://shinemoidev.github.io/)查看
 
 <!-- ### 错误处理
 
@@ -82,44 +128,3 @@ make: *** [Release/obj.target/fse/fsevents.o] Error 1
 执行 npm install fsevents 后重试.
  -->
 
-### 写文章
-
-```bash
-$ hexo n "title"
-```
-
-写文章使用markdown格式，参考[markdown教程](https://www.jianshu.com/p/q81RER)
-
-### 查看文章效果
-
-#### 本地启动hexo server
-
-```bash
-$ hexo s
-```
-
-确认文章效果符合自己的预期
-
-### 提交代码
-
-```bash
-$ git commit -s
-```
-
-```bash
-$ git push origin master
-```
-
-### 部署blog
-
-```bash
-hexo g
-```
-
-```bash
-hexo d
-```
-
-### 查看最终效果
-
-浏览器打开[shinemoidev.github.io](https://shinemoidev.github.io/)查看
