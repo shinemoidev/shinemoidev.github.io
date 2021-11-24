@@ -9,9 +9,29 @@ team-blog安装写作部署基本流程，初期可能需要适应一下，学�
 
 ### 本机安装Hexo
 
+Hexo 需要 node.js 支持，所以要先安装 node.js，为了避免不必要的权限问题，推荐使用 nvm 安装 node.js
+
+1. 安装 nvm
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+```
+
+2. 安装 node
+
+```bash
+nvm install node
+````
+
+3. 安装 hexo
+
+```bash
+npm install -g hexo-cli
+```
+
 参考[hexo安装教程](https://hexo.io/zh-cn/docs/)
 
-### 去coding.net注册自己的账号，并添加ssh-key
+### 去 github 注册自己的账号，并添加ssh-key
 
 注册完成后，彩云 @徐金良 告诉我你的用户名
 
@@ -22,7 +42,7 @@ team-blog安装写作部署基本流程，初期可能需要适应一下，学�
 ### clone blog repo
 
 ```bash
-$ git clone git@git.coding.net:shinemo_ios/shinemo_ios.git ~/iOS-team-blog
+$ git clone git@github.com:shinemoidev/shinemoidev.github.io.git ~/iOS-team-blog
 ```
 
 ### to blog dir
@@ -37,11 +57,9 @@ $ cd ~/iOS-team-blog
 
 ```bash
 $ npm install hexo-deployer-git --save
-$ npm install hexo-renderer-pug --save
-$ npm install hexo-renderer-sass --save
 ```
 
-### 错误处理
+<!-- ### 错误处理
 
 #### 错误1
 ```bash
@@ -62,17 +80,7 @@ rm: ./Release/.deps/Release/obj.target/fse/fsevents.o.d.raw: No such file or dir
 make: *** [Release/obj.target/fse/fsevents.o] Error 1
 ```
 执行 npm install fsevents 后重试.
-
-
-
-
-
-
-
-
-
-
-
+ -->
 
 ### 写文章
 
@@ -114,4 +122,4 @@ hexo d
 
 ### 查看最终效果
 
-浏览器打开[zxios.com](http://zxios.com)查看
+浏览器打开[shinemoidev.github.io](https://shinemoidev.github.io/)查看
