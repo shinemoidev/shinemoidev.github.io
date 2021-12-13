@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Xcode中使用LLDB调试 | ShineMo iOS Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在Xcode中调试程序对于我们日常的开发工作来说，更多的时候是在Xcode中进行调试工作。因此上面所描述的流程，其实Xcode已经帮我们完成了大部分的工作，而且很多东西也可以在Xcode里面看到。因此，我们可以把精力都集中在代码层面上。 在苹果的官方文档中列出了我们在调试中能用到的一些命令，我们在这重点讲一些常用的命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode中使用LLDB调试">
+<meta property="og:url" content="https://shinemoidev.github.io/2019/01/11/2019-01-11-Xcode-LLDB/index.html">
+<meta property="og:site_name" content="ShineMo iOS Dev">
+<meta property="og:description" content="在Xcode中调试程序对于我们日常的开发工作来说，更多的时候是在Xcode中进行调试工作。因此上面所描述的流程，其实Xcode已经帮我们完成了大部分的工作，而且很多东西也可以在Xcode里面看到。因此，我们可以把精力都集中在代码层面上。 在苹果的官方文档中列出了我们在调试中能用到的一些命令，我们在这重点讲一些常用的命令。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-01-11T01:55:42.000Z">
+<meta property="article:modified_time" content="2021-12-13T06:44:16.622Z">
+<meta property="article:author" content="ShineMo iOS Dev Team">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="ShineMo iOS Dev" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ShineMo iOS Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">讯盟iOS开发团队博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://shinemoidev.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2019-01-11-Xcode-LLDB" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/01/11/2019-01-11-Xcode-LLDB/" class="article-date">
+  <time class="dt-published" datetime="2019-01-11T01:55:42.000Z" itemprop="datePublished">2019-01-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Xcode中使用LLDB调试
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="在Xcode中调试程序"><a href="#在Xcode中调试程序" class="headerlink" title="在Xcode中调试程序"></a>在Xcode中调试程序</h3><p>对于我们日常的开发工作来说，更多的时候是在Xcode中进行调试工作。因此上面所描述的流程，其实Xcode已经帮我们完成了大部分的工作，而且很多东西也可以在Xcode里面看到。因此，我们可以把精力都集中在代码层面上。</p>
+<p>在<a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-command-examples.html#//apple_ref/doc/uid/TP40012917-CH3-SW5">苹果的官方文档</a>中列出了我们在调试中能用到的一些命令，我们在这重点讲一些常用的命令。</p>
+<span id="more"></span>
+
+<h3 id="打印"><a href="#打印" class="headerlink" title="打印"></a>打印</h3><p>打印变量的值可以使用<code>print</code>命令，该命令如果打印的是简单类型，则会列出简单类型的类型和值。如果是对象，还会打印出对象指针地址，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) print a</span><br><span class="line">(NSInteger) $0 = 0</span><br><span class="line">(lldb) print b</span><br><span class="line">(NSInteger) $1 = 0</span><br><span class="line">(lldb) print str</span><br><span class="line">(NSString *) $2 = 0x0000000100001048 @&quot;abc&quot;</span><br><span class="line">(lldb) print url</span><br><span class="line">(NSURL *) $3 = 0x0000000100206cc0 @&quot;abc&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在输出结果中我们还能看到类似于<code>$0</code>,<code>$1</code>这样的符号，我们可以将其看作是指向对象的一个引用，我们在控制面板中可以直接使用这个符号来操作对应的对象，这些东西存在于LLDB的全名空间中，目的是为了辅助调试。如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(lldb) exp $0 = 100</span><br><span class="line">(NSInteger) $9 = 100</span><br><span class="line">(lldb) p a</span><br><span class="line">(NSInteger) $10 = 100</span><br></pre></td></tr></table></figure>
+
+<p>另外<code>$</code>后面的数值是递增的，每打印一个与对象相关的命令，这个值都会加1。<br>上面的<code>print</code>命令会打印出对象的很多信息，如果我们只想查看对象的值的信息，则可以使用<code>po</code>(<code>print object</code>的缩写)命令，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po str</span><br><span class="line">abc</span><br></pre></td></tr></table></figure>
+
+<p>当然，<code>po</code>命令是<code>&quot;exp -O --&quot;</code>命令的别名，使用<code>&quot;exp -O --&quot;</code>能达到同样的效果。<br>对于简单类型，我们还可以为其指定不同的打印格式，其命令格式是<code>print/</code>，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x a</span><br><span class="line">(NSInteger) $13 = 0x0000000000000064</span><br></pre></td></tr></table></figure>
+
+<p>格式的完整清单可以参考<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/onlinedocs/gdb/Output-Formats.html">Output Formats</a>。</p>
+<h3 id="expression"><a href="#expression" class="headerlink" title="expression"></a>expression</h3><p>在开发中，我们经常会遇到这样一种情况：我们设置一个视图的背景颜色，运行后发现颜色不好看。嗯，好吧，在代码里面修改一下，再编译运行一下，嗯，还是不好看，然后再修改吧～～这样无形中浪费了我们大把的时间。在这种情况下，<code>expression</code>命令强大的功能就能体现出来了，它不仅会改变调试器中的值，还改变了程序中的实际值。我们先来看看实际效果，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(lldb) exp a = 10</span><br><span class="line">(NSInteger) $0 = 10</span><br><span class="line">(lldb) exp b = 100</span><br><span class="line">(NSInteger) $1 = 100</span><br><span class="line">2015-01-25 14:00:41.313 test[18064:71466] a + b = 110, abc</span><br></pre></td></tr></table></figure>
+
+<p><code>expression</code>命令的功能不仅于此，正如上面的po命令，其实际也是<code>&quot;expression -O --&quot;</code>命令的别名。更详细使用可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-command-examples.html#//apple_ref/doc/uid/TP40012917-CH3-SW5">Evaluating Expressions</a>。</p>
+<h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p><code>image</code>命令的用法也挺多，首先可以用它来查看工程中使用的库，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image list</span><br><span class="line">[  0] 432A6EBF-B9D2-3850-BCB2-821B9E62B1E0 0x0000000100000000 /Users/**/Library/Developer/Xcode/DerivedData/test-byjqwkhxixddxudlnvqhrfughkra/Build/Products/Debug/test </span><br><span class="line">[  1] 65DCCB06-339C-3E25-9702-600A28291D0E 0x00007fff5fc00000 /usr/lib/dyld </span><br><span class="line">[  2] E3746EDD-DFB1-3ECB-88ED-A91AC0EF3AAA 0x00007fff8d324000 /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation </span><br><span class="line">[  3] 759E155D-BC42-3D4E-869B-6F57D477177C 0x00007fff8869f000 /usr/lib/libobjc.A.dylib </span><br><span class="line">[  4] 5C161F1A-93BA-3221-A31D-F86222005B1B 0x00007fff8c75c000 /usr/lib/libSystem.B.dylib </span><br><span class="line">[  5] CBD1591C-405E-376E-87E9-B264610EBF49 0x00007fff8df0d000 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation </span><br><span class="line">[  6] A260789B-D4D8-316A-9490-254767B8A5F1 0x00007fff8de36000 /usr/lib/libauto.dylib </span><br></pre></td></tr></table></figure>
+
+<p>我们还可以用它来查找可执行文件或共享库的原始地址，这一点还是很有用的，当我们的程序崩溃时，我们可以使用这条命令来查找崩溃所在的具体位置，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray *array = @[@1, @2];</span><br><span class="line">NSLog(@&quot;item 3: %@&quot;, array[2]);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码在运行后会抛出如下异常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2015-01-25 14:12:01.007 test[18122:76474] *** Terminating app due to uncaught exception &#x27;NSRangeException&#x27;, reason: &#x27;*** -[__NSArrayI objectAtIndex:]: index 2 beyond bounds [0 .. 1]&#x27;</span><br><span class="line">*** First throw call stack:</span><br><span class="line">(</span><br><span class="line">	0   CoreFoundation                      0x00007fff8e06f66c __exceptionPreprocess + 172</span><br><span class="line">	1   libobjc.A.dylib                     0x00007fff886ad76e objc_exception_throw + 43</span><br><span class="line">	2   CoreFoundation                      0x00007fff8df487de -[__NSArrayI objectAtIndex:] + 190</span><br><span class="line">	3   test                                0x0000000100000de0 main + 384</span><br><span class="line">	4   libdyld.dylib                       0x00007fff8f1b65c9 start + 1</span><br><span class="line">)</span><br><span class="line">libc++abi.dylib: terminating with uncaught exception of type NSException</span><br></pre></td></tr></table></figure>
+
+<p>根据以上信息，我们可以判断崩溃位置是在<code>main.m</code>文件中，要想知道具体在哪一行，可以使用以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image lookup --address 0x0000000100000de0</span><br><span class="line">      Address: test[0x0000000100000de0] (test.__TEXT.__text + 384)</span><br><span class="line">      Summary: test`main + 384 at main.m:23</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，最后定位到了<code>main.m</code>文件的第<code>23</code>行，正是我们代码所在的位置。<br>我们还可以使用<code>image lookup</code>命令来查看具体的类型，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image lookup --type NSURL</span><br><span class="line">Best match found in /Users/**/Library/Developer/Xcode/DerivedData/test-byjqwkhxixddxudlnvqhrfughkra/Build/Products/Debug/test:</span><br><span class="line">id = &#123;0x100000157&#125;, name = &quot;NSURL&quot;, byte-size = 40, decl = NSURL.h:17, clang_type = &quot;@interface NSURL : NSObject&#123;</span><br><span class="line">    NSString * _urlString;</span><br><span class="line">    NSURL * _baseURL;</span><br><span class="line">    void * _clients;</span><br><span class="line">    void * _reserved;</span><br><span class="line">&#125;</span><br><span class="line">@property ( readonly,getter = absoluteString,setter = &lt;null selector&gt;,nonatomic ) NSString * absoluteString;</span><br><span class="line">@property ( readonly,getter = relativeString,setter = &lt;null selector&gt;,nonatomic ) NSString * relativeString;</span><br><span class="line">@property ( readonly,getter = baseURL,setter = &lt;null selector&gt;,nonatomic ) NSURL * baseURL;</span><br><span class="line">@property ( readonly,getter = absoluteURL,setter = &lt;null selector&gt;,nonatomic ) NSURL * absoluteURL;</span><br><span class="line">@property ( readonly,getter = scheme,setter = &lt;null selector&gt;,nonatomic ) NSString * scheme;</span><br><span class="line">@property ( readonly,getter = resourceSpecifier,setter = &lt;null selector&gt;,nonatomic ) NSString * resourceSpecifier;</span><br><span class="line">@property ( readonly,getter = host,setter = &lt;null selector&gt;,nonatomic ) NSString * host;</span><br><span class="line">@property ( readonly,getter = port,setter = &lt;null selector&gt;,nonatomic ) NSNumber * port;</span><br><span class="line">@property ( readonly,getter = user,setter = &lt;null selector&gt;,nonatomic ) NSString * user;</span><br><span class="line">@property ( readonly,getter = password,setter = &lt;null selector&gt;,nonatomic ) NSString * password;</span><br><span class="line">@property ( readonly,getter = path,setter = &lt;null selector&gt;,nonatomic ) NSString * path;</span><br><span class="line">@property ( readonly,getter = fragment,setter = &lt;null selector&gt;,nonatomic ) NSString * fragment;</span><br><span class="line">@property ( readonly,getter = parameterString,setter = &lt;null selector&gt;,nonatomic ) NSString * parameterString;</span><br><span class="line">@property ( readonly,getter = query,setter = &lt;null selector&gt;,nonatomic ) NSString * query;</span><br><span class="line">@property ( readonly,getter = relativePath,setter = &lt;null selector&gt;,nonatomic ) NSString * relativePath;</span><br><span class="line">@property ( readonly,getter = fileSystemRepresentation,setter = &lt;null selector&gt; ) const char * fileSystemRepresentation;</span><br><span class="line">@property ( readonly,getter = isFileURL,setter = &lt;null selector&gt;,readwrite ) BOOL fileURL;</span><br><span class="line">@property ( readonly,getter = standardizedURL,setter = &lt;null selector&gt;,nonatomic ) NSURL * standardizedURL;</span><br><span class="line">@property ( readonly,getter = filePathURL,setter = &lt;null selector&gt;,nonatomic ) NSURL * filePathURL;</span><br><span class="line">@end&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，输出结果中列出了<code>NSURL</code>的一些成员变量及属性信息。<br><code>image</code>命令还有许多其它功能，具体可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-command-examples.html#//apple_ref/doc/uid/TP40012917-CH3-SW5">Executable and Shared Library Query Commands</a>。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p>转载自: 南峰子的技术博客 (<a target="_blank" rel="noopener" href="http://southpeak.github.io/2015/01/25/tool-lldb/">LLDB调试器使用简介</a>)</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://shinemoidev.github.io/2019/01/11/2019-01-11-Xcode-LLDB/" data-id="ckx4bakdi000vk1hvasnf4o1e" data-title="Xcode中使用LLDB调试" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/09/2019-10-09-iOS-Crash-%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          iOS Crash 分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/2018-11-13-private-pod/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">做一个自己的私有pod</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%A2%E9%98%9F/">团队</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/block/" rel="tag">block</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/doc/" rel="tag">doc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/" rel="tag">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">代码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" rel="tag">函数式编程 ReactiveObjc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/UI%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">UI组件</a> <a href="/tags/block/" style="font-size: 10px;">block</a> <a href="/tags/doc/" style="font-size: 10px;">doc</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">代码规范</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 13.33px;">其他</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" style="font-size: 10px;">函数式编程 ReactiveObjc</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/SwiftUI-%E4%B8%8E-UIKit-%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AE%80%E8%BF%B0/">SwiftUI 与 UIKit 混合开发简述</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/03/ios-tips/">iOS Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/2019-10-09-iOS-Crash-%E5%88%86%E6%9E%90/">iOS Crash 分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/11/2019-01-11-Xcode-LLDB/">Xcode中使用LLDB调试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/2018-11-13-private-pod/">做一个自己的私有pod</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 ShineMo iOS Dev Team<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

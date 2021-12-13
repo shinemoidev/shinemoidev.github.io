@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>网络组件-SHMNetworking | ShineMo iOS Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基于AFNetworking封装的网络库，同时参考了YTKNetwork，一个请求一个对象。 目前只实现了基本的发送http请求，上传、下载文件，基本满足彩云的需求。 常量定义12345678910111213141516171819202122232425262728293031typedef NS_ENUM(NSUInteger, SHMHTTPMethod) &amp;#123;    SHMHTT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络组件-SHMNetworking">
+<meta property="og:url" content="https://shinemoidev.github.io/2018/10/16/2018-10-16-shmnetworking/index.html">
+<meta property="og:site_name" content="ShineMo iOS Dev">
+<meta property="og:description" content="基于AFNetworking封装的网络库，同时参考了YTKNetwork，一个请求一个对象。 目前只实现了基本的发送http请求，上传、下载文件，基本满足彩云的需求。 常量定义12345678910111213141516171819202122232425262728293031typedef NS_ENUM(NSUInteger, SHMHTTPMethod) &amp;#123;    SHMHTT">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-10-16T06:27:06.000Z">
+<meta property="article:modified_time" content="2021-12-13T06:44:16.622Z">
+<meta property="article:author" content="ShineMo iOS Dev Team">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="ShineMo iOS Dev" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ShineMo iOS Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">讯盟iOS开发团队博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://shinemoidev.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2018-10-16-shmnetworking" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/16/2018-10-16-shmnetworking/" class="article-date">
+  <time class="dt-published" datetime="2018-10-16T06:27:06.000Z" itemprop="datePublished">2018-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      网络组件-SHMNetworking
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>基于<a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a>封装的网络库，同时参考了<a target="_blank" rel="noopener" href="https://github.com/yuantiku/YTKNetwork">YTKNetwork</a>，一个请求一个对象。</p>
+<p>目前只实现了基本的发送http请求，上传、下载文件，基本满足彩云的需求。</p>
+<h2 id="常量定义"><a href="#常量定义" class="headerlink" title="常量定义"></a>常量定义</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSUInteger</span>, SHMHTTPMethod) &#123;</span><br><span class="line">    SHMHTTPMethodGET = <span class="number">333</span>,</span><br><span class="line">    SHMHTTPMethodPOST,</span><br><span class="line">    SHMHTTPMethodPUT,</span><br><span class="line">    SHMHTTPMethodDELETE,</span><br><span class="line">    <span class="comment">// and more (HEAD, CONNECT, OPTIONS, TRACE)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * encode parameters and set default header (Content-Type, etc)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSUInteger</span>, SHMHRequestSerializerType) &#123;</span><br><span class="line">    <span class="comment">/// query string for GET / form-encoded for POST, etc...</span></span><br><span class="line">    SHMRequestSerializerTypeHTTP = <span class="number">666</span>,</span><br><span class="line">    <span class="comment">/// encode parameters as JSON</span></span><br><span class="line">    SHMRequestSerializerTypeJSON,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * response data type you want.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSUInteger</span>, SHMResponseSerializerType) &#123;</span><br><span class="line">    <span class="comment">/// I do NOT care about the responseObject</span></span><br><span class="line">    SHMResponseSerializerTypeNone = <span class="number">888</span>,</span><br><span class="line">    <span class="comment">/// NSData</span></span><br><span class="line">    SHMResponseSerializerTypeHTTP,</span><br><span class="line">    <span class="comment">/// JSON</span></span><br><span class="line">    SHMResponseSerializerTypeJOSN,</span><br><span class="line">    <span class="comment">/// NSXMLParser</span></span><br><span class="line">    SHMResponseSerializerTypeXMLParser,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Protocol"><a href="#Protocol" class="headerlink" title="Protocol"></a>Protocol</h2><h3 id="SHMHTTPRequesting"><a href="#SHMHTTPRequesting" class="headerlink" title="SHMHTTPRequesting"></a>SHMHTTPRequesting</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">SHMHTTPRequesting</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 主机名</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)host;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 除去主机名部分的请求地址</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)path;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GET, POST, DELETE ...</span></span><br><span class="line">- (SHMHTTPMethod)method;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 请求参数，会根据method和requestSerializerType自动进行处理（GET时会自动拼接到URL上）</span></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader;</span><br><span class="line">- (<span class="built_in">NSData</span> *)bodyData;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)ignoreLocalCache;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回的数据是否是压缩过的数据，返回YES时，会自动进行一次数据解压</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)responseDataZipped;</span><br><span class="line"></span><br><span class="line"><span class="comment">// encode parameters and set default header (Content-Type, etc)</span></span><br><span class="line">- (SHMHRequestSerializerType)requestSerializerType;</span><br><span class="line"></span><br><span class="line"><span class="comment">// response data type you want. 根据服务端返回的数据，设置对应的类型</span></span><br><span class="line">- (SHMResponseSerializerType)responseSerializerType;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line">- (<span class="built_in">NSTimeInterval</span>)timeout;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SHMDownloadRequesting"><a href="#SHMDownloadRequesting" class="headerlink" title="SHMDownloadRequesting"></a>SHMDownloadRequesting</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">SHMDownloadRequesting</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)host;</span><br><span class="line">- (<span class="built_in">NSString</span> *)path;</span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters;</span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader;</span><br><span class="line">- (<span class="built_in">NSTimeInterval</span>)timeout;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定文件路径，下载到的数据会存到这个文件里</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)destFilePath;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SHMUploadRequesting"><a href="#SHMUploadRequesting" class="headerlink" title="SHMUploadRequesting"></a>SHMUploadRequesting</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">SHMUploadRequesting</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)host;</span><br><span class="line">- (<span class="built_in">NSString</span> *)path;</span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters;</span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader;</span><br><span class="line">- (SHMResponseSerializerType)responseSerializerType;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下两种方法用于提供要上传的数据</span></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line">- (<span class="built_in">NSData</span> *)fileData;</span><br><span class="line">- (<span class="keyword">void</span>(^)(<span class="keyword">id</span> &lt;AFMultipartFormData&gt;))fileDataConstructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><h3 id="一般请求"><a href="#一般请求" class="headerlink" title="一般请求"></a>一般请求</h3><p>新建一个request类，继承自类 <strong>SHMHTTPRequest</strong>，同时遵循协议 <strong>SHMHTTPRequesting</strong>。请求里需要的参数，通过实现协议里的方法提供。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDRolodexCreateGroupRequest.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">WDRolodexCreateGroupRequest</span> : <span class="title">SHMHTTPRequest</span> &lt;<span class="title">SHMHTTPRequesting</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithGroupName:(<span class="built_in">NSString</span> *)groupName orgId:(int64_t)orgId;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDRolodexCreateGroupRequest.m</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">WDRolodexCreateGroupRequest</span> </span>&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *_groupName;</span><br><span class="line">    int64_t _orgId;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithGroupName:(<span class="built_in">NSString</span> *)groupName orgId:(int64_t)orgId &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    _groupName = groupName;</span><br><span class="line">    _orgId = orgId;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark -- SHMHTTPRequesting</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)host &#123;</span><br><span class="line">    <span class="keyword">return</span> [WDRolodexRequestTools rolodexRequestHost];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)path &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">@&quot;group/create&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (SHMHTTPMethod)method &#123;</span><br><span class="line">    <span class="keyword">return</span> SHMHTTPMethodPOST;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader &#123;</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *headers = [[<span class="built_in">NSMutableDictionary</span> alloc] init];</span><br><span class="line">    [headers addEntriesFromDictionary:[WDRolodexRequestTools rolodexRequestCommonHeadersWithOrgId:_orgId]];</span><br><span class="line">    headers[<span class="string">@&quot;orgId&quot;</span>] = @(_orgId).stringValue;</span><br><span class="line">    <span class="keyword">return</span> headers.copy;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSData</span> *)bodyData &#123;</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *bodyDic = [[<span class="built_in">NSMutableDictionary</span> alloc] init];</span><br><span class="line">    bodyDic[<span class="string">@&quot;name&quot;</span>] = _groupName;</span><br><span class="line">    <span class="built_in">NSData</span> *bodyData = [<span class="built_in">NSJSONSerialization</span> dataWithJSONObject:bodyDic options:<span class="built_in">NSJSONWritingPrettyPrinted</span> error:<span class="literal">nil</span>];</span><br><span class="line">    <span class="keyword">return</span> bodyData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)ignoreLocalCache &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)responseDataZipped &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (SHMHRequestSerializerType)requestSerializerType &#123;</span><br><span class="line">    <span class="keyword">return</span> SHMRequestSerializerTypeHTTP;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (SHMResponseSerializerType)responseSerializerType &#123;</span><br><span class="line">    <span class="keyword">return</span> SHMResponseSerializerTypeHTTP;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>新建一个request类，继承自类 <strong>SHMDownloadRequest</strong>，同时遵循协议 <strong>SHMDownloadRequesting</strong>。请求里需要的参数，通过实现协议里的方法提供。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDDownloadFileRequest.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">WDDownloadFileRequest</span> : <span class="title">SHMDownloadRequest</span> &lt;<span class="title">SHMDownloadRequesting</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithDownloadURL:(<span class="built_in">NSString</span> *)downloadURL localFilePath:(<span class="built_in">NSString</span> *)localFilePath;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithDownloadURL:(<span class="built_in">NSString</span> *)downloadURL localFilePath:(<span class="built_in">NSString</span> *)localFilePath timeout:(<span class="built_in">NSTimeInterval</span>)timeout;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDDownloadFileRequest.m</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">WDDownloadFileRequest</span> </span>&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *_downloadURL;</span><br><span class="line">    <span class="built_in">NSString</span> *_localFilePath;</span><br><span class="line">    <span class="built_in">NSTimeInterval</span> _timeout;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithDownloadURL:(<span class="built_in">NSString</span> *)downloadURL localFilePath:(<span class="built_in">NSString</span> *)localFilePath &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> initWithDownloadURL:downloadURL localFilePath:localFilePath timeout:<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithDownloadURL:(<span class="built_in">NSString</span> *)downloadURL localFilePath:(<span class="built_in">NSString</span> *)localFilePath timeout:(<span class="built_in">NSTimeInterval</span>)timeout &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    _downloadURL = downloadURL;</span><br><span class="line">    _localFilePath = localFilePath;</span><br><span class="line">    _timeout = timeout;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark -- SHMDownloadRequesting</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)host &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)path &#123;</span><br><span class="line">    <span class="keyword">return</span> _downloadURL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSTimeInterval</span>)timeout &#123;</span><br><span class="line">    <span class="keyword">return</span> _timeout;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)destFilePath &#123;</span><br><span class="line">    <span class="keyword">return</span> _localFilePath;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>一般情况下，彩云里可以直接使用 <strong>WDDownloadFileRequest</strong> 来进行文件下载</p>
+<h3 id="上传"><a href="#上传" class="headerlink" title="上传"></a>上传</h3><p>新建一个request类，继承自类 <strong>SHMUploadRequest</strong>，同时遵循协议 <strong>SHMUploadRequesting</strong>。请求里需要的参数，通过实现协议里的方法提供。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDUploadAvatarRequest.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">WDUploadAvatarRequest</span> : <span class="title">SHMUploadRequest</span> &lt;<span class="title">SHMUploadRequesting</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithImageData:(<span class="built_in">NSData</span> *)imageData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WDUploadAvatarRequest.m</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">WDUploadAvatarRequest</span> </span>&#123;</span><br><span class="line">    <span class="built_in">NSData</span> *_imageData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithImageData:(<span class="built_in">NSData</span> *)imageData &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    _imageData = imageData;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark -- SHMUploadRequesting</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)host &#123;</span><br><span class="line">    <span class="keyword">return</span> [[WDServerURLMgr sharedInstance] imHttpServerUrl];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)path &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;/sfs/upload/avatar%@&quot;</span>, [WDAvatarRequestTools requestToken]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)parameters &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)httpHeader &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSData</span> *)fileData &#123;</span><br><span class="line">    <span class="keyword">return</span> _imageData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://shinemoidev.github.io/2018/10/16/2018-10-16-shmnetworking/" data-id="ckx4bakdh000qk1hv2cg045yl" data-title="网络组件-SHMNetworking" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/2018-11-13-private-pod/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          做一个自己的私有pod
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/10/15/2018-10-15-wdactionalertview/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">UI组件-WDActionAlertView</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%A2%E9%98%9F/">团队</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/block/" rel="tag">block</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/doc/" rel="tag">doc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/" rel="tag">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">代码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" rel="tag">函数式编程 ReactiveObjc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/UI%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">UI组件</a> <a href="/tags/block/" style="font-size: 10px;">block</a> <a href="/tags/doc/" style="font-size: 10px;">doc</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">代码规范</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 13.33px;">其他</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" style="font-size: 10px;">函数式编程 ReactiveObjc</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/SwiftUI-%E4%B8%8E-UIKit-%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AE%80%E8%BF%B0/">SwiftUI 与 UIKit 混合开发简述</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/03/ios-tips/">iOS Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/2019-10-09-iOS-Crash-%E5%88%86%E6%9E%90/">iOS Crash 分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/11/2019-01-11-Xcode-LLDB/">Xcode中使用LLDB调试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/2018-11-13-private-pod/">做一个自己的私有pod</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 ShineMo iOS Dev Team<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

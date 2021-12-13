@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UI组件-WDCirculationScrollview | ShineMo iOS Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="轮播图片显示控件 使用1234WDCirculationScrollView *circuScrollView &#x3D; [WDCirculationScrollView alloc] init];[self.contentView addSubview:circuScrollView];circuScrollView.frame &#x3D; ...circuScrollView.imageUrls &#x3D; ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI组件-WDCirculationScrollview">
+<meta property="og:url" content="https://shinemoidev.github.io/2018/08/30/2018-08-30-circulation-scrollview/index.html">
+<meta property="og:site_name" content="ShineMo iOS Dev">
+<meta property="og:description" content="轮播图片显示控件 使用1234WDCirculationScrollView *circuScrollView &#x3D; [WDCirculationScrollView alloc] init];[self.contentView addSubview:circuScrollView];circuScrollView.frame &#x3D; ...circuScrollView.imageUrls &#x3D; ...">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-30T07:14:17.000Z">
+<meta property="article:modified_time" content="2021-12-13T06:44:16.622Z">
+<meta property="article:author" content="ShineMo iOS Dev Team">
+<meta property="article:tag" content="组件">
+<meta property="article:tag" content="UI组件">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="ShineMo iOS Dev" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ShineMo iOS Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">讯盟iOS开发团队博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://shinemoidev.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2018-08-30-circulation-scrollview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/30/2018-08-30-circulation-scrollview/" class="article-date">
+  <time class="dt-published" datetime="2018-08-30T07:14:17.000Z" itemprop="datePublished">2018-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      UI组件-WDCirculationScrollview
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>轮播图片显示控件</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WDCirculationScrollView *circuScrollView = [WDCirculationScrollView alloc] init];</span><br><span class="line">[self.contentView addSubview:circuScrollView];</span><br><span class="line">circuScrollView.frame = ...</span><br><span class="line">circuScrollView.imageUrls = ...</span><br></pre></td></tr></table></figure>
+<p>支持initWithFrame,setFrame,autolayout布局</p>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSArray&lt;NSString *&gt; *imageUrls;</span><br><span class="line"></span><br><span class="line">//刷新pageControl等</span><br><span class="line">@property (nonatomic, copy) void(^pageChangedBlock)(NSInteger currentPage, NSInteger numOfPages);</span><br><span class="line">//点击图片</span><br><span class="line">@property (nonatomic, copy) void(^selectAImageBlock)(NSInteger index);</span><br><span class="line"></span><br><span class="line">//个性化滚动imageview</span><br><span class="line">@property (nonatomic, copy) void(^customerAImageFrame)(UIImageView *imageView, NSInteger index);</span><br><span class="line"></span><br><span class="line">//自动滚动时使用</span><br><span class="line">@property (nonatomic, copy) void(^startOrPauseTimerBlock)(BOOL canStart);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="imageUrls"><a href="#imageUrls" class="headerlink" title="imageUrls"></a>imageUrls</h4><p>当然是指要显示的图片的网络地址列表</p>
+<h4 id="pageChangedBlock"><a href="#pageChangedBlock" class="headerlink" title="pageChangedBlock"></a>pageChangedBlock</h4><p>回调告诉外部，图片个数或者当前图片变化。外部界面进行处理，例如更新pagecontrol的当前页和页面个数。</p>
+<h4 id="selectAImageBlock"><a href="#selectAImageBlock" class="headerlink" title="selectAImageBlock"></a>selectAImageBlock</h4><p>点击某张图片回调，外部进行页面跳转等。</p>
+<h4 id="customerAImageFrame"><a href="#customerAImageFrame" class="headerlink" title="customerAImageFrame"></a>customerAImageFrame</h4><p>个性化图片展示，比如 设置图片展示的大小，圆角，contentMode等(默认 UIViewContentModeScaleAspectFill –铺满裁剪)</p>
+<h4 id="startOrPauseTimerBlock"><a href="#startOrPauseTimerBlock" class="headerlink" title="startOrPauseTimerBlock"></a>startOrPauseTimerBlock</h4><p>停止和启动定时器回调。由于在图片onDrag的时候需要暂停，onDragEnd的时候继续timer,所以需要自动轮播的需要设置该回调去启动和暂停timer</p>
+<h4 id="方法-scrollToNext"><a href="#方法-scrollToNext" class="headerlink" title="方法:scrollToNext"></a>方法:scrollToNext</h4><p>外部调用该方法表示滚动到下一个。比如自动轮播时，定时调用来自动翻到下一张。</p>
+<h2 id="关于属性注入的感想"><a href="#关于属性注入的感想" class="headerlink" title="关于属性注入的感想"></a>关于属性注入的感想</h2><p>以需要(frame, imageUrls, pageChangedBlock, selectAImageBlock)四个参数为例：<br>如果用构造函数来注入这些参数。因为都是可选的，我们要写以下构造函数来实现：<br>initWithFrame:<br>initWithImageUrls:<br>initWithPageChangedBlock:<br>initWithSelectAImageBlock:<br>initWithFrame: imageUrls: pageChangedBlock: selectAImageBlock:<br>initWithFrame: imageUrls: pageChangedBlock:<br>initWithFrame: imageUrls:<br>initWithFrame: pageChangedBlock:<br>initWithFrame: pageChangedBlock: selectAImageBlock:<br>initWithFrame: imageUrls: selectAImageBlock:<br>…<br>等 C(4,0) + C(4,1) + C(4,2) + C(4,3) + C(4,4) = 1 + 4 + 6 + 4 + 1 = 16 个方法满足。4参数个就需要16个之多。</p>
+<p><em>但是用属性方式 这16个都是可以省的。</em></p>
+<p>这里不得不提下swift构造函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">init(frame:CGRect = .zero, imageUrls:Array&lt;String&gt;? = nil, pageChangedBlock:((_ currentPage:Int, _ numOfPages:Int) -&gt; Void)? = nil, selectAImageBlock:((_ index:Int) -&gt; Void)? = nil) &#123;</span><br><span class="line">        super.init()</span><br></pre></td></tr></table></figure>
+<p>只要一个就够了。</p>
+<p>可以这样用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(imageUrls: nil)</span><br></pre></td></tr></table></figure>
+<p>也可以这样用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(imageUrls: nil, selectAImageBlock: nil)</span><br></pre></td></tr></table></figure>
+<p>只是不能换着顺序用：<br>比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(selectAImageBlock: nil, imageUrls: nil)</span><br></pre></td></tr></table></figure>
+<p>是不行的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://shinemoidev.github.io/2018/08/30/2018-08-30-circulation-scrollview/" data-id="ckx4bakdg000jk1hv2ckihele" data-title="UI组件-WDCirculationScrollview" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/09/20/2018-09-20-iOS-ReactiveObjc-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          iOS函数响应式编程(一)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/30/2018-08-30-wdpagecontrol/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">UI组件-WDPageControl</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%A2%E9%98%9F/">团队</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/block/" rel="tag">block</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/doc/" rel="tag">doc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/" rel="tag">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">代码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" rel="tag">函数式编程 ReactiveObjc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/UI%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">UI组件</a> <a href="/tags/block/" style="font-size: 10px;">block</a> <a href="/tags/doc/" style="font-size: 10px;">doc</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">代码规范</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 13.33px;">其他</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" style="font-size: 10px;">函数式编程 ReactiveObjc</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/SwiftUI-%E4%B8%8E-UIKit-%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AE%80%E8%BF%B0/">SwiftUI 与 UIKit 混合开发简述</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/03/ios-tips/">iOS Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/2019-10-09-iOS-Crash-%E5%88%86%E6%9E%90/">iOS Crash 分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/11/2019-01-11-Xcode-LLDB/">Xcode中使用LLDB调试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/2018-11-13-private-pod/">做一个自己的私有pod</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 ShineMo iOS Dev Team<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

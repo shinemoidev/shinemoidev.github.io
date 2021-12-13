@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>iOS函数响应式编程(一) | ShineMo iOS Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="iOS函数响应式编程函数响应式编程简介函数式编程想必您一定听过，但响应式编程的说法就不大常见了。与响应式编程对应的命令式编程就是大家所熟知的一种编程范式，我们先来看一段代码： 1234567int a &#x3D; 3;int b &#x3D; 4;int c &#x3D; a + b;NSLog(@&quot;c is %d&quot;, c); &#x2F;&#x2F; &#x3D;&gt; 7a &#x3D; 5;b &#x3D; 7;NSLog(@&quot;c is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS函数响应式编程(一)">
+<meta property="og:url" content="https://shinemoidev.github.io/2018/09/20/2018-09-20-iOS-ReactiveObjc-1/index.html">
+<meta property="og:site_name" content="ShineMo iOS Dev">
+<meta property="og:description" content="iOS函数响应式编程函数响应式编程简介函数式编程想必您一定听过，但响应式编程的说法就不大常见了。与响应式编程对应的命令式编程就是大家所熟知的一种编程范式，我们先来看一段代码： 1234567int a &#x3D; 3;int b &#x3D; 4;int c &#x3D; a + b;NSLog(@&quot;c is %d&quot;, c); &#x2F;&#x2F; &#x3D;&gt; 7a &#x3D; 5;b &#x3D; 7;NSLog(@&quot;c is">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-09-20T03:19:47.000Z">
+<meta property="article:modified_time" content="2021-12-13T06:44:16.622Z">
+<meta property="article:author" content="ShineMo iOS Dev Team">
+<meta property="article:tag" content="函数式编程 ReactiveObjc">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="ShineMo iOS Dev" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ShineMo iOS Dev</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">讯盟iOS开发团队博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://shinemoidev.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2018-09-20-iOS-ReactiveObjc-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/20/2018-09-20-iOS-ReactiveObjc-1/" class="article-date">
+  <time class="dt-published" datetime="2018-09-20T03:19:47.000Z" itemprop="datePublished">2018-09-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      iOS函数响应式编程(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="iOS函数响应式编程"><a href="#iOS函数响应式编程" class="headerlink" title="iOS函数响应式编程"></a>iOS函数响应式编程</h1><h2 id="函数响应式编程简介"><a href="#函数响应式编程简介" class="headerlink" title="函数响应式编程简介"></a>函数响应式编程简介</h2><p>函数式编程想必您一定听过，但响应式编程的说法就不大常见了。与响应式编程对应的命令式编程就是大家所熟知的一种编程范式，我们先来看一段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a = 3;</span><br><span class="line">int b = 4;</span><br><span class="line">int c = a + b;</span><br><span class="line">NSLog(@&quot;c is %d&quot;, c); // =&gt; 7</span><br><span class="line">a = 5;</span><br><span class="line">b = 7;</span><br><span class="line">NSLog(@&quot;c is %d&quot;, c); // 仍然是7</span><br></pre></td></tr></table></figure>
+<p>命令式编程就是通过表达式或语句来改变状态量，例如c = a + b就是一个表达式，它创建了一个名称为c的状态量，其值为a与b的加和。下面的a = 5是另一个语句，它改变了a的值，但这时c是没有变化的。所以命令式编程中c = a + b只是一个瞬时的过程，而不是一个关系描述。在传统的开发中，想让c跟随a和b的变化而变化是比较困难的。而让c的值实时等于a与b的加和的编程方式就是响应式编程。</p>
+<p>实际上，在日常的开发中我们会经常使用响应式编程的思想来进行开发。最典型的例子就是Excel，当我们在一个B1单元格上书写一个公式“=A1+5”时，便声明了一种对应关系，每当A1单元格发生变化时，单元格B2都会随之改变。</p>
+<p>iOS开发中也有响应式编程的典型例子，例如Autolayout。我们通过设置约束描述了各个视图的位置关系，一旦其中一个变化，另一个就会响应其变化。类似的例子还有很多。</p>
+<p>函数响应式编程（英文Functional Reactive Programming，以下简称FRP，）正是在函数式编程的基础之上，增加了响应式的支持。</p>
+<p>简单来讲，FRP是基于异步事件流进行编程的一种编程范式。针对离散事件序列进行有效的封装，利用函数式编程的思想，满足响应式编程的需要。</p>
+<p>区别于面向过程编程范式以过程单元作为核心组成部分，面向对象编程范式以对象单元作为核心组成部分，函数式编程范式以函数和高阶函数作为核心组成部分。FRP则以离散有序序列作为核心组成部分，也可将其定义为信号。其特点是具备可迭代特性并且允许离散事件节点有时间联系.</p>
+<h2 id="iOS项目的函数响应式编程选型"><a href="#iOS项目的函数响应式编程选型" class="headerlink" title="iOS项目的函数响应式编程选型"></a>iOS项目的函数响应式编程选型</h2><p>很长一段时间以来，iOS项目并没有很好的FRP支持，直到iOS 4.0 SDK中增加了Block语法才为函数式编程提供了前置条件，FRP开源库也逐步健全起来。</p>
+<p>最先与大家见面的莫过于ReactiveCocoa这样一个库了，ReactiveCocoa是Github在制作Github客户端时开源的一个副产物，缩写为RAC。它是Objective-C语言下FRP思想的一个优秀实例，后续版本也支持了Swift语言。</p>
+<p>gitlab地址: <a target="_blank" rel="noopener" href="https://github.com/ReactiveCocoa/ReactiveObjC">https://github.com/ReactiveCocoa/ReactiveObjC</a></p>
+<p>iOS的项目主要以客户端项目为主，主要的业务场景就是进行页面交互和与服务器拉取数据，这里面会包含多种事件和异步处理逻辑。FRP本身就是面向事件流的一种开发方式，又擅长处理异步逻辑。所以从逻辑上是满足iOS客户端业务需要的。</p>
+<p>然而能够把一个理念融合到实际的项目中，需要一个漫长的过程。</p>
+<h2 id="ReactiveCocoa-试图解决什么问题"><a href="#ReactiveCocoa-试图解决什么问题" class="headerlink" title="ReactiveCocoa 试图解决什么问题"></a>ReactiveCocoa 试图解决什么问题</h2><ol>
+<li>传统 iOS 开发过程中，状态以及状态之间依赖过多的问题</li>
+<li>传统 MVC 架构的问题：Controller比较复杂，可测试性差</li>
+<li>提供统一的消息传递机制</li>
+</ol>
+<h2 id="一步一步进行函数响应式编程"><a href="#一步一步进行函数响应式编程" class="headerlink" title="一步一步进行函数响应式编程"></a>一步一步进行函数响应式编程</h2><h3 id="统一回调"><a href="#统一回调" class="headerlink" title="统一回调"></a>统一回调</h3><p>写法不统一聚焦在回调形式的不统一上，iOS中的回调方式有非常多的种类：UIKit主要进行的事件处理target-action、跨类依赖推荐的delegate模式、iOS 4.0纳入的block、利用通知中心（Notifcation Center）进行松耦合的回调、利用键值观察（Key-Value Observe，简称KVO）进行的监听。由于场景不同，选用的规则也不尽相同，并且我们没有办法很好的界定什么场景该写什么样的回调。</p>
+<p>看下面的例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 代替target-action</span><br><span class="line">    [[self.confirmButton rac_signalForControlEvents:UIControlEventTouchUpInside]</span><br><span class="line">     subscribeNext:^(id x) &#123;</span><br><span class="line">        // 回调内容写在这里</span><br><span class="line">     &#125;];</span><br><span class="line">    </span><br><span class="line">// 代替delegate</span><br><span class="line">    [[self rac_signalForSelector:@selector(scrollViewDidScroll:) fromProtocol:@protocol(UIScrollViewDelegate)]</span><br><span class="line">     subscribeNext:^(id x) &#123;</span><br><span class="line">         // 回调内容写在这里</span><br><span class="line">         NSLog(@&quot;view did scroll&quot;);</span><br><span class="line">     &#125;];</span><br><span class="line">    //切记要讲下面这句话放在注册delegate的后面,否则会引起回调无法被调用.</span><br><span class="line">    self.scrollView.delegate = self;</span><br><span class="line">    </span><br><span class="line">// 代替block</span><br><span class="line">    [[self asyncProcess]</span><br><span class="line">     subscribeNext:^(id x) &#123;</span><br><span class="line">        // 回调内容写在这里</span><br><span class="line">     &#125; error:^(NSError *error) &#123;</span><br><span class="line">        // 错误处理写到这里</span><br><span class="line">     &#125;];</span><br><span class="line">    </span><br><span class="line">// 代替notification center</span><br><span class="line">    [[[NSNotificationCenter defaultCenter] rac_valuesForKeyPath:@&quot;Some-key&quot; observer:nil]</span><br><span class="line">     subscribeNext:^(id x) &#123;</span><br><span class="line">        // 回调内容写在这里</span><br><span class="line">     &#125;];</span><br><span class="line"></span><br><span class="line">// 代替KVO</span><br><span class="line">    [RACObserve(self, userReportString)</span><br><span class="line">     subscribeNext:^(id x) &#123;</span><br><span class="line">        // 回调内容写在这里</span><br><span class="line">     &#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="信号的使用"><a href="#信号的使用" class="headerlink" title="信号的使用"></a>信号的使用</h3><h4 id="信号的概念"><a href="#信号的概念" class="headerlink" title="信号的概念"></a>信号的概念</h4><p>作为RAC中最为核心的一个类，信号可以理解为传递数据变化信息的工具，信号会在数据发生变化时发送事件流给它的订阅者，然后订阅者执行响应方法。信号本身不具备发送信号的能力，而是交给一个订阅者去发出。</p>
+<p>测试场景：我们要对一个用于输入用户名的UITextFiled进行检测，每次输入内容变化的时候都打出输入框的内容，使用RAC来实现此操作的关键代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[self.userNameTxtField.rac_textSignal subscribeNext:^(NSString * _Nullable x) &#123;</span><br><span class="line">        NSLog(@&quot;测试：%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="ReactiveCocoa信号机制"><a href="#ReactiveCocoa信号机制" class="headerlink" title="ReactiveCocoa信号机制"></a>ReactiveCocoa信号机制</h4><p>我们会对上面的代码产生疑问，RAC是怎么做到上述代码功能的呢？而且我们常说的订阅者又在哪里呢？</p>
+<p>其实RAC已经使用Category的形式为我们基本的UI控件创建了信号(如上例中的rac_textSignal)，所以这里我们才可以很方便的实现信号订阅，而且订阅者在整个过程中也是对于我们隐藏的。 现在我们使用自定义信号的方法，从创建信号到订阅信号细致的了解一下这个过程。首先上一段创建信号的测试代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//创建信号</span><br><span class="line">RACSignal *testSignal = [RACSignal createSignal:^RACDisposable * _Nullable(id&lt;RACSubscriber&gt;  _Nonnull subscriber) &#123;</span><br><span class="line">    //1.订阅者发送信号内容</span><br><span class="line">    [subscriber sendNext:@&quot;发送信号内容&quot;];</span><br><span class="line">    //2.订阅者发送信号完成的信息，不需要再发送数据时，最好发送信号完成，可以内部调起清理信号的操作。</span><br><span class="line">    [subscriber sendCompleted];</span><br><span class="line">    //3.创建信号的Block参数，需要返回一个RACDisposable对象 ，可以返回nil。</span><br><span class="line">    //RACDisposable对象用于取消订阅信号，此block在信号完成或者错误时调用。</span><br><span class="line">    RACDisposable *racDisposable = [RACDisposable disposableWithBlock:^&#123;</span><br><span class="line">       NSLog(@&quot;信号Error或者Complete时销毁&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">    return racDisposable;</span><br><span class="line">&#125;];</span><br><span class="line">    </span><br><span class="line">//订阅信号</span><br><span class="line">[testSignal subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    //新变化的值</span><br><span class="line">    NSLog(@&quot;订阅信号：subscribeNext:%@&quot;,x);</span><br><span class="line">&#125; error:^(NSError * _Nullable error) &#123;</span><br><span class="line">    //信号错误，被取消订阅,被移除观察</span><br><span class="line">    NSLog(@&quot;订阅信号：Error:%@&quot;,error.description);</span><br><span class="line">&#125; completed:^&#123;</span><br><span class="line">    //信号已经完成，被取消订阅，被移除观察</span><br><span class="line">    NSLog(@&quot;订阅信号：subscribeComplete&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">控制台打印:</span><br><span class="line">2018-09-17 14:17:31.837292+0800 FRPSamples[10409:262829] 订阅信号：subscribeNext:发送信号内容</span><br><span class="line">2018-09-17 14:17:31.837462+0800 FRPSamples[10409:262829] 订阅信号：subscribeComplete</span><br><span class="line">2018-09-17 14:17:31.837618+0800 FRPSamples[10409:262829] 信号Error或者Complete时销毁</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建信号"><a href="#创建信号" class="headerlink" title="创建信号"></a>创建信号</h4><p>创建信号，我们需要使用RACSignal的类方法createSignal。该方法需要一个Block作为参数。查看源码，我们就会发现RACSignal最终是通过调用自己子类RACDynamicSignal的createSignal方法，将这个Block设置给了自己的didSubscribe属性的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//RACSignal.m文件</span><br><span class="line">+ (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe &#123;</span><br><span class="line"> 	return [RACDynamicSignal createSignal:didSubscribe];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//RACDynamicSignal.h文件</span><br><span class="line">@interface RACDynamicSignal ()</span><br><span class="line">// The block to invoke for each subscriber.</span><br><span class="line">@property (nonatomic, copy, readonly) RACDisposable * (^didSubscribe)(id&lt;RACSubscriber&gt; subscriber);</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//RACDynamicSignal.m文件</span><br><span class="line">+ (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe &#123;</span><br><span class="line"> 	RACDynamicSignal *signal = [[self alloc] init];</span><br><span class="line"> 	signal-&gt;_didSubscribe = [didSubscribe copy];</span><br><span class="line"> 	return [signal setNameWithFormat:@&quot;+createSignal:&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>didSubscribe</strong>：这是创建信号时候需要传入的一个block，它的传入参数是订阅者subscriber，而返回值是需要是一个RACDisposable对象。创建信号后的didSubscrib是一个等待执行的block。</p>
+<p><strong>RACSubscriber</strong>：表示订阅者，创建信号时订阅者发送信号，这里的订阅者是一个协议而非一个类。信号需要订阅者帮助其发送数据。查看RACSubscriber的协议，我可以看到以下几个方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//发送信息</span><br><span class="line">- (void)sendNext:(nullable id)value;</span><br><span class="line">//发送错误消息</span><br><span class="line">- (void)sendError:(nullable NSError *)error;</span><br><span class="line">//发送完成信息</span><br><span class="line">- (void)sendCompleted;</span><br><span class="line">//</span><br><span class="line">- (void)didSubscribeWithDisposable:(RACCompoundDisposable *)disposable;</span><br></pre></td></tr></table></figure>
+
+<p>在创建一个信号的时候，订阅者使用sendNext发送信息。而且如果我们不再发送数据，最好在这里执行一次sendCompleted方法，这样的话，信号内部会自动调用对应的方法取消信号订阅。</p>
+<p>RACDisposable：这个类用于取消订阅信号和清理资源，在信号出现错误或者信号完成的时候，信号会自动调起RACDisposable对象的block方法。在代码中我们也可以看到，创建RACDisposable对象是使用disposableWithBlock方法设置了一个block操作，执行block操作之后，信号就不再被订阅了。</p>
+<p><strong>总结</strong>：创建信号就是使用createSignal方法，创建一个信号，并为信号设置了一个didSubscribe属性(也就是一系列订阅者需要做的操作)。</p>
+<h4 id="订阅信号"><a href="#订阅信号" class="headerlink" title="订阅信号"></a>订阅信号</h4><p>进入订阅信号的源码我们看到如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock completed:(void (^)(void))completedBlock &#123;</span><br><span class="line"> 	NSCParameterAssert(nextBlock != NULL);</span><br><span class="line"> 	NSCParameterAssert(errorBlock != NULL);</span><br><span class="line"> 	NSCParameterAssert(completedBlock != NULL);</span><br><span class="line"> 	</span><br><span class="line"> 	RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:errorBlock completed:completedBlock];</span><br><span class="line"> 	return [self subscribe:o];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在此方法中，我们可以看到订阅信号有两个过程：</p>
+<p><strong>过程1：使用subscribeNext的方法参数，创建出一个订阅者subscriber。</strong></p>
+<p><strong>过程2：信号对象执行了订阅操作subscribe，方法中传入参数是刚创建的订阅者。</strong></p>
+<p>注：这也就解释了我们常提起却看不见的订阅者存在哪里的问题。真实开发中我们只关心订阅者需要发送的值就行了，而不需要关心其内部订阅的过程。</p>
+<p>继续打开信号的subscribe方法，看到源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber &#123;</span><br><span class="line"> 	NSCParameterAssert(subscriber != nil);</span><br><span class="line"> 	RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];</span><br><span class="line"> 	subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];</span><br><span class="line"> 	if (self.didSubscribe != NULL) &#123;</span><br><span class="line"> 		RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^&#123;</span><br><span class="line"> 			RACDisposable *innerDisposable = self.didSubscribe(subscriber);</span><br><span class="line"> 			[disposable addDisposable:innerDisposable];</span><br><span class="line"> 		&#125;];</span><br><span class="line"> 		[disposable addDisposable:schedulingDisposable];</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	return disposable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中我们不难看出：<strong>除了对于订阅者和清理对象的再次封装外，最重要的就是创建信号时为信号设置Block(didSubscribe)被调用了，而且Block参数使用了我们创建的订阅者。</strong></p>
+<h3 id="信号的操作"><a href="#信号的操作" class="headerlink" title="信号的操作"></a>信号的操作</h3><p>这里我们介绍一些关于信号的最常用的操作, 高级用法后续介绍.</p>
+<h4 id="map-flattenMap"><a href="#map-flattenMap" class="headerlink" title="map,flattenMap"></a>map,flattenMap</h4><p><strong>map的操作</strong></p>
+<ol>
+<li>传入一个block,类型是返回对象，参数是value;</li>
+<li>value就是源信号的内容，直接拿到源信号的内容做处理;</li>
+<li>把处理好的内容，直接返回就好了，不用包装成信号，返回的值，就是映射的值。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[[_textField.rac_textSignal map:^id _Nullable(NSString * _Nullable value) &#123;</span><br><span class="line">    // 当源信号发出，就会调用这个block，修改源信号的内容</span><br><span class="line">    // 返回值：就是处理完源信号的内容。</span><br><span class="line">    return [NSString stringWithFormat:@&quot;hello:%@&quot;,value];</span><br><span class="line">&#125;] subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // hello: &quot;x&quot;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<p><strong>flattenMap的操作</strong></p>
+<p>1.传入一个block，block类型是返回值RACStream，参数value；<br>2.参数value就是源信号的内容，拿到源信号的内容做处理；<br>3.包装成RACReturnSignal信号，返回出去。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[_textField.rac_textSignal flattenMap:^__kindof RACSignal * _Nullable(NSString * _Nullable value) &#123;</span><br><span class="line">    return  [RACSignal return:[NSString stringWithFormat:@&quot;hello %@&quot;, value]];</span><br><span class="line">&#125;] subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // hello &quot;x&quot;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<p><strong>flatternMap和Map的区别</strong></p>
+<p>所以flattenMap和map的区别在于，flattenMap的block参数返回一个“任意类型”信号RACSignal到bind内部去做addSignal(RACSignal)操作来对RACSignal进行订阅；<br>而map是限定flattenMap只能返回一个RACReturnSignal信号去bind内部做addSigna(RACReturenSignal)操作来对RACReturnSignal进行订阅，而对RACReturnSignal进行订阅只能获取RACReturnSignal内部携带的value值。</p>
+<p><strong>小结</strong></p>
+<ol>
+<li>FlatternMap中的Block返回信号</li>
+<li>Map中的Block返回对象</li>
+<li>开发中，如果信号发出的值不是信号，映射一般使用Map</li>
+<li>开发中，如果信号发出的值是信号，映射一般使用FlatternMap</li>
+</ol>
+<h4 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h4><p>flattenMap 的底层实现是通过bind实现的</p>
+<p>Map 的底层实现是通过 flattenMap 实现的</p>
+<ol>
+<li>传入一个返回值RACSignalBindBlock的block;</li>
+<li>描述一个RACSignalBindBlock类型的bindBlock作为block的返回值;</li>
+<li>描述一个返回结果的信号，作为bindBlock的返回值.<br>注意：在bindBlock中做信号结果的处理</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[[_textField.rac_textSignal bind:^RACSignalBindBlock _Nonnull&#123;</span><br><span class="line">    return ^RACSignal*(id value, BOOL *stop)&#123;</span><br><span class="line">        // 做好处理，通过信号返回出去.</span><br><span class="line">        return [RACSignal return:[NSString stringWithFormat:@&quot;hello: %@&quot;,value]];</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;] subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // hello: &quot;x&quot;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h4><p>按照从左到右的顺序拼接信号,当多个信号发出的时候,有顺序的接受信号.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    [subscriber sendCompleted]; //注释这句signalB不会subscribeNext</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    [subscriber sendCompleted]; //注释这句concat之后不会onCompleted</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// 把signalA拼接到signalB后，signalA发送完成，signalB才会被激活</span><br><span class="line">[[signalA concat:signalB] subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x);</span><br><span class="line">&#125; completed:^&#123;</span><br><span class="line">    NSLog(@&quot;complete.....&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="then"><a href="#then" class="headerlink" title="then"></a>then</h4><p>用于连接两个信号，当第一个信号完成，才会连接then返回的信号<br><strong>底层实现</strong></p>
+<ol>
+<li>使用concat连接then返回的信号</li>
+<li>先过滤掉之前的信号发出的值</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">RACSignal * signle = [RACSignal createSignal:^RACDisposable * _Nullable(id&lt;RACSubscriber&gt;  _Nonnull subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@&quot;1&quot;];</span><br><span class="line">    [subscriber sendNext:@&quot;2&quot;];</span><br><span class="line">    [subscriber sendCompleted];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[[signle then:^RACSignal * _Nonnull&#123;</span><br><span class="line">    return [RACSignal createSignal:^RACDisposable * _Nullable(id&lt;RACSubscriber&gt;  _Nonnull subscriber) &#123;</span><br><span class="line">        [subscriber sendNext:@&quot;3&quot;];</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;] subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    //then会把之前的信号过滤掉，所以这里只会接收到第二个信号的值 3</span><br><span class="line">    NSLog(@&quot;%@&quot;,x);</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[signle subscribeNext:^(id  _Nullable x) &#123;</span><br><span class="line">    //第一个信号订阅了，所以顺序执行到这里才会打印1，2</span><br><span class="line">    NSLog(@&quot;%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h4><p>把多个信号合并为一个信号，任何一个信号有新值的时候就会调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//创建多个信号</span><br><span class="line">RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// 合并信号,任何一个信号发送数据，都能监听到.</span><br><span class="line">RACSignal *mergeSignal = [signalA merge:signalB];</span><br><span class="line"></span><br><span class="line">[mergeSignal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); //</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="zipWith"><a href="#zipWith" class="headerlink" title="zipWith"></a>zipWith</h4><p>把两个信号压缩成一个信号，只有当两个信号同时发出信号内容时，并且把两个信号的内容合并成一个元组，才会触发压缩流的next事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// 压缩信号A，信号B</span><br><span class="line">RACSignal *zipSignal = [signalA zipWith:signalB];</span><br><span class="line"></span><br><span class="line">[zipSignal subscribeNext:^(id x) &#123;</span><br><span class="line">    // x 为元祖 RACTuple</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // (1, 2) </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="combineLatest"><a href="#combineLatest" class="headerlink" title="combineLatest"></a>combineLatest</h4><p>将多个信号合并起来，并且拿到各个信号的最新的值,必须每个合并的signal至少都有过一次sendNext，才会触发合并的信号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// 把两个信号组合成一个信号,跟zip一样，没什么区别</span><br><span class="line">RACSignal *combineSignal = [signalA combineLatestWith:signalB];</span><br><span class="line"></span><br><span class="line">[combineSignal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // (1, 2)</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h4><p>用于信号发出的内容是元组，把信号发出元组的值聚合成一个值</p>
+<p>一般都是先组合在聚合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *signalA = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">RACSignal *signalB = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// reduceblcok的返回值：聚合信号之后的内容。</span><br><span class="line">RACSignal *reduceSignal = [RACSignal combineLatest:@[signalA,signalB] reduce:^id(NSNumber *num1 ,NSNumber *num2)&#123;</span><br><span class="line">    return [NSString stringWithFormat:@&quot;%@ %@&quot;,num1,num2];</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[reduceSignal subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // 1 2</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><p>过滤信号，获取满足条件的信号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//获取到位数大于6的值</span><br><span class="line">[[self.mainText.rac_textSignal filter:^BOOL(NSString *value) &#123;</span><br><span class="line">    return value.length &gt; 6;</span><br><span class="line">&#125;] subscribeNext:^(NSString * _Nullable x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x); // x 值位数大于6</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="ignore"><a href="#ignore" class="headerlink" title="ignore"></a>ignore</h4><p>忽略掉指定的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[self.mainText.rac_textSignal ignore:@&quot;666&quot;] subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;ignore onSubscribed %@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="interval"><a href="#interval" class="headerlink" title="interval"></a>interval</h4><p>类似于 NSTimer</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//每隔1秒发送一次信号</span><br><span class="line">[[RACSignal interval:1 onScheduler:[RACScheduler mainThreadScheduler]] subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;interval fired %@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="delay"><a href="#delay" class="headerlink" title="delay"></a>delay</h4><p>延迟执行，类似于 GCD 的 after</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[[[RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;] delay:2] subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,x);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="skip"><a href="#skip" class="headerlink" title="skip"></a>skip</h4><p>跳过第几个信号,接受后面的信号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[[[RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    [subscriber sendNext:@3];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;] skip:1] subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;skip test %@&quot;,x); //跳过1</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="take"><a href="#take" class="headerlink" title="take"></a>take</h4><p>从第一个信号开始开始一共取N次的信号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">    [subscriber sendNext:@1];</span><br><span class="line">    [subscriber sendNext:@2];</span><br><span class="line">    [subscriber sendNext:@3];</span><br><span class="line">    return nil;</span><br><span class="line">&#125;];</span><br><span class="line">[[signal take:2] subscribeNext:^(id x) &#123;</span><br><span class="line">    NSLog(@&quot;take test %@&quot;,x); //只接受1,2</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用UI相关信号"><a href="#常用UI相关信号" class="headerlink" title="常用UI相关信号"></a>常用UI相关信号</h3><h4 id="rac-signalForControlEvents-UIControl"><a href="#rac-signalForControlEvents-UIControl" class="headerlink" title="rac_signalForControlEvents(UIControl)"></a>rac_signalForControlEvents(UIControl)</h4><p>用于监听控件某个事件, 当事件发生时会触发回调</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[self.loginBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIButton *sender) &#123;</span><br><span class="line">        NSLog(@&quot;button clicked!&quot;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="rac-imageSelectedSignal-UIImagePickerController"><a href="#rac-imageSelectedSignal-UIImagePickerController" class="headerlink" title="rac_imageSelectedSignal (UIImagePickerController)"></a>rac_imageSelectedSignal (UIImagePickerController)</h4><p>选择图片的信号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">self.imagePicker = [UIImagePickerController new];</span><br><span class="line">[self.imagePicker.rac_imageSelectedSignal subscribeNext:^(id x) &#123;</span><br><span class="line">    //该block回调是在照片选择完成的时候调用</span><br><span class="line">    @strongify(self);</span><br><span class="line">    NSLog(@&quot;%@&quot;,x);</span><br><span class="line">    NSDictionary *dic = (NSDictionary *)x;</span><br><span class="line">    self.myImageView.image = dic[@&quot;UIImagePickerControllerOriginalImage&quot;];</span><br><span class="line">    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];</span><br><span class="line">&#125;];</span><br><span class="line">self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;</span><br><span class="line">[self presentViewController:self.imagePicker animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+
+<h4 id="rac-textSignal"><a href="#rac-textSignal" class="headerlink" title="rac_textSignal"></a>rac_textSignal</h4><p>textSignal 顾名思义就是关于某些控件关于text属性的信号,当控件的text属性发生变化的时候回通知所有的订阅者. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *accountValidSignal =</span><br><span class="line">   [self.accountTV.rac_textSignal map:^id(id value) &#123;</span><br><span class="line">       return @(self.accountTV.text.length &gt; 5);//转化为是否合法布尔值</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h4 id="RAC宏"><a href="#RAC宏" class="headerlink" title="RAC宏"></a>RAC宏</h4><p>RAC宏用来订阅某个实例的成员属性的变化,例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RACSignal *accountValidSignal =</span><br><span class="line">   [self.accountTV.rac_textSignal map:^id(id value) &#123;</span><br><span class="line">       return @(self.accountTV.text.length &gt; 5);//转化为是否合法布尔值</span><br><span class="line">&#125;];</span><br><span class="line">//根据 self.accountTV 控件是否合法来设置背景颜色</span><br><span class="line">RAC(self.accountTV, backgroundColor) =</span><br><span class="line">   [accountValidSignal map:^id(NSNumber* accountValid) &#123;</span><br><span class="line">  return accountValid.boolValue ? [UIColor whiteColor] : [UIColor redColor]; //转化为UIColor</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="避免循环引用，外部-weakify-self-，内部-strongify-self"><a href="#避免循环引用，外部-weakify-self-，内部-strongify-self" class="headerlink" title="避免循环引用，外部@weakify(self)，内部@strongify(self)"></a>避免循环引用，外部@weakify(self)，内部@strongify(self)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// @weakify() 宏定义</span><br><span class="line">    @weakify(self) //相当于__weak typeof(self) weakSelf = self;</span><br><span class="line">    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) &#123;</span><br><span class="line">        @strongify(self)  //相当于__strong typeof(weakSelf) strongSelf = weakSelf;</span><br><span class="line">        NSLog(@&quot;%@&quot;,self.view);</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用RAC对象"><a href="#常用RAC对象" class="headerlink" title="常用RAC对象"></a>常用RAC对象</h3><p>见下一次分享</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/a709314090/article/details/53870398">https://blog.csdn.net/a709314090/article/details/53870398</a><br><a target="_blank" rel="noopener" href="http://williamzang.com/blog/2016/06/27/ios-kai-fa-xia-de-han-shu-xiang-ying-shi-bian-cheng/">http://williamzang.com/blog/2016/06/27/ios-kai-fa-xia-de-han-shu-xiang-ying-shi-bian-cheng/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://shinemoidev.github.io/2018/09/20/2018-09-20-iOS-ReactiveObjc-1/" data-id="ckx4bakdh000mk1hvbkpsdf5l" data-title="iOS函数响应式编程(一)" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" rel="tag">函数式编程 ReactiveObjc</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/15/2018-10-15-wdactionalertview/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          UI组件-WDActionAlertView
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/30/2018-08-30-circulation-scrollview/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">UI组件-WDCirculationScrollview</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%A2%E9%98%9F/">团队</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/block/" rel="tag">block</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/doc/" rel="tag">doc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/" rel="tag">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">代码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" rel="tag">函数式编程 ReactiveObjc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/UI%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">UI组件</a> <a href="/tags/block/" style="font-size: 10px;">block</a> <a href="/tags/doc/" style="font-size: 10px;">doc</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">代码规范</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 13.33px;">其他</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-ReactiveObjc/" style="font-size: 10px;">函数式编程 ReactiveObjc</a> <a href="/tags/%E7%BB%84%E4%BB%B6/" style="font-size: 20px;">组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/13/SwiftUI-%E4%B8%8E-UIKit-%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AE%80%E8%BF%B0/">SwiftUI 与 UIKit 混合开发简述</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/03/ios-tips/">iOS Tips</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/2019-10-09-iOS-Crash-%E5%88%86%E6%9E%90/">iOS Crash 分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/11/2019-01-11-Xcode-LLDB/">Xcode中使用LLDB调试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/2018-11-13-private-pod/">做一个自己的私有pod</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 ShineMo iOS Dev Team<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
