@@ -86,7 +86,7 @@ git add .
 
 git commit -s
 
-git push origin master
+git push origin main
 ```
 
 ### 部署blog
