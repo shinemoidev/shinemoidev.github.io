@@ -14,6 +14,8 @@ tags:
 
 <!--more-->
 
+<-- more -->
+
 ### 2、class-dump工具安装和使用
 
 class-dump是一个可以导出 Objective-C 头文件的工具，官网：[http://stevenygard.com]()
