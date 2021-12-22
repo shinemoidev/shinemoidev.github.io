@@ -20,6 +20,8 @@ pod repo add SHMPods ssh://git@git.shinemo.com:7999/shmpodspecs/shmpods.git
 ls ~/.cocoapods/repos
 ```
 
+<!--more-->
+
 ## 如何创建一个私有pod
 
 CocoaPods 官方提供了非常方便的命令让我们来创建 pod

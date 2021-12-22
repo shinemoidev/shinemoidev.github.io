@@ -12,6 +12,8 @@ tags:
 
 从 App Store 下载的 app 是经过加密的，需要对其进行解密后，才能进行分析。如果你懒得砸壳，可以直接去各种苹果助手下载越狱版 app，那些是已经解密过的。但是如果要找的 app 在助手上没有，就只能自己砸壳了，至于如何砸壳，自行google相关教程，本文只介绍如何逆向分析已经脱壳ipa。
 
+<!--more-->
+
 ### 2、class-dump工具安装和使用
 
 class-dump是一个可以导出 Objective-C 头文件的工具，官网：[http://stevenygard.com]()

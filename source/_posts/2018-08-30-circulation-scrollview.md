@@ -16,6 +16,8 @@ circuScrollView.imageUrls = ...
 ```
 支持initWithFrame,setFrame,autolayout布局
 
+<!--more-->
+
 ### 属性
 ```
 @property (nonatomic, strong) NSArray<NSString *> *imageUrls;
