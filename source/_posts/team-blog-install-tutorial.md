@@ -1,7 +1,9 @@
 ---
 title: Team blog install tutorial
 date: 2018-01-22 09:53:03
-tags: 其他 教程
+tags:
+- 其他 
+- 教程
 ---
 team-blog安装写作部署基本流程，初期可能需要适应一下，学几个新的命令，熟练了之后写起来还是蛮舒服的
 
