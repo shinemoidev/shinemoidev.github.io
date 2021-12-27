@@ -59,6 +59,10 @@ cd ~/iOS-team-blog
 npm install hexo-deployer-git --save
 ```
 
+```bash
+npm install hexo-reading-time --save
+```
+
 ### 写文章
 
 ```bash

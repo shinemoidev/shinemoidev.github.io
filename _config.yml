@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: ShineMo iOS Dev
+title: '讯盟 iOS '
 subtitle: '讯盟iOS开发团队博客'
 description: ''
 keywords:
@@ -94,14 +94,15 @@ include:
 exclude:
 ignore:
 
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: landscape
-
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
   repo: git@github.com:shinemoidev/shinemoidev.github.io.git
   branch: gh-pages
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+# theme: landscape
+theme: hexo-theme-xoxo
