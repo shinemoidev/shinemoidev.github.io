@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="iOS," />
+  
+
+  
+    <meta name="description" content="IntrinsicContentSize 与 AutoLayout 的使用剖析" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>IntrinsicContentSize 与 AutoLayout 的使用剖析 [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        IntrinsicContentSize 与 AutoLayout 的使用剖析
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2018-02-28T08:09:24.000Z">
+        2018-02-28
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 4 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <p>在使用AutoLayout时，经常会产生约束冲突，我们可以通过改变约束优先级，及模糊约束来解决冲突。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>Content Hugging (不想变大约束)：如果组件的此属性优先级比另一个组件此属性优先级高的话，那么这个组件就保持不变，另一个可以在需要拉伸的时候拉伸。</p>
+</blockquote>
+<blockquote>
+<p>Content Compression (不想变小约束)：如果组件的此属性优先级比另一个组件此属性优先级高的话，那么这个组件就保持不变，另一个可以在需要压缩的时候压缩。</p>
+</blockquote>
+<h3 id="Content-Hugging／Content-Compression"><a href="#Content-Hugging／Content-Compression" class="headerlink" title="Content Hugging／Content Compression"></a>Content Hugging／Content Compression</h3><p><code>Content Hugging</code>，<code>Content Compression</code> 是两个UIView自带的模糊约束，而这两个约束存在的条件则是UIView必须指定了 Intrinsic Content Size。</p>
+<h3 id="Intrinsic-Contenet-Size"><a href="#Intrinsic-Contenet-Size" class="headerlink" title="Intrinsic Contenet Size"></a>Intrinsic Contenet Size</h3><p>Intrinsic Content Size：固有大小。顾名思义，在AutoLayout中，它作为UIView的属性，意思就是说我知道自己的大小，如果你没有为我指定大小，我就按照这个大小来。 比如：大家都知道在使用AutoLayout的时候，<code>UILabel</code>是不用指定尺寸大小的，只需指定位置即可，就是因为，只要确定了文字内容，字体等信息，它自己就能计算出大小来。</p>
+<p><code>UILabel</code>，<code>UIImageView</code>，<code>UIButton</code>等这些组件及某些包含它们的系统组件都有 Intrinsic Content Size 属性。 也就是说，遇到这些组件，你只需要为其指定位置即可。大小就使用Intrinsic Content Size就行了。</p>
+<p>在代码中，上述系统控件都重写了<code>UIView</code> 中的<code>-(CGSize)intrinsicContentSize:</code> 方法。 并且在需要改变这个值的时候调用：<code>invalidateIntrinsicContentSize</code> 方法，通知系统这个值改变了。</p>
+<p>所以当我们在编写继承自UIView的自定义组件时，也想要有Intrinsic Content Size的时候，就可以通过这种方法来轻松实现。</p>
+<h3 id="Intrinsic冲突"><a href="#Intrinsic冲突" class="headerlink" title="Intrinsic冲突"></a>Intrinsic冲突</h3><p>一个<code>UIView</code>有了 Intrinsic Content Size 之后，就可以只指定位置而不指定大小，但有的时候会有问题。举个栗子：水平两个<code>UILlabel</code>，label1距左边50，label2距右边也50，中间间隔10。如果按照约束来布局，则没办法满足两个<code>UIlabel</code>都使用 Intrinsic Content Size，至少某个<code>UILabel</code>的宽度大于Intrinsic Content Size。这种情况，我们称之为2个组件之间的“Intrinsic冲突”。</p>
+<p>解决“Intrinsic冲突”的方案有2种：</p>
+<blockquote>
+<p>1、两个UIlabel都不使用Intrinsic Content Size。为两个UIlabel增加新的约束，来显式指定它们的大小。</p>
+</blockquote>
+<blockquote>
+<p>2、可以让其中一个<code>UIlabel</code>使用Intrinsic Content Size，另一个label则自动占用剩余的空间。这时候就需要用到 Content Hugging 和 Content Compression了。</p>
+</blockquote>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Content-Hugging%EF%BC%8FContent-Compression"><span class="toc-text">Content Hugging／Content Compression</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intrinsic-Contenet-Size"><span class="toc-text">Intrinsic Contenet Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intrinsic%E5%86%B2%E7%AA%81"><span class="toc-text">Intrinsic冲突</span></a></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2018/02/06/2018-02-06-ShineMo-Objective-C-Style-Guid/" rel="next" title="讯盟 Objective-C 代码规范">
+          讯盟 Objective-C 代码规范
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2018/04/10/2018-04-10-AppStore-Privacy-Policy/" rel="prev" title="AppStore Privacy Policy">
+            AppStore Privacy Policy
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>

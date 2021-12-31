@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="逆向,反编译," />
+  
+
+  
+    <meta name="description" content="iOS 逆向指南：静态分析" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>iOS 逆向指南：静态分析 [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        iOS 逆向指南：静态分析
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2021-12-22T06:19:50.000Z">
+        2021-12-22
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8D%E7%BC%96%E8%AF%91/" rel="tag">反编译</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 4 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <p>静态分析是指对二进制包进行反编译，分析静态的代码逻辑。</p>
+<h3 id="1、获取ipa"><a href="#1、获取ipa" class="headerlink" title="1、获取ipa"></a>1、获取ipa</h3><p>从 App Store 下载的 app 是经过加密的，需要对其进行解密后，才能进行分析。如果你懒得砸壳，可以直接去各种苹果助手下载越狱版 app，那些是已经解密过的。但是如果要找的 app 在助手上没有，就只能自己砸壳了，至于如何砸壳，自行google相关教程，本文只介绍如何逆向分析已经脱壳ipa。</p>
+<span id="more"></span>
+
+<h3 id="2、class-dump工具安装和使用"><a href="#2、class-dump工具安装和使用" class="headerlink" title="2、class-dump工具安装和使用"></a>2、class-dump工具安装和使用</h3><p>class-dump是一个可以导出 Objective-C 头文件的工具，官网：<a href="">http://stevenygard.com</a></p>
+<p>通过分析头文件里的 API，可以简单地分析一个类的实现，或者查找一些私有 API。</p>
+<p>class-dump 官网上的版本不能导出用 swift 编写的工程的头文件，当出现<code>Error: Cannot find offset for address 0x3a546a04 in dataOffsetForAddress:</code>这样的错误时，就说明这个 app 可能是用 swift 编写的。</p>
+<p>建议去 github 上手动编译最新版的 class-dump，或者使用 class-dump-z 代替，下载地址：<a href="">https://code.google.com/archive/p/networkpx/downloads</a></p>
+<p>把下载到的class-dump执行文件拷贝到<code>/usr/local/bin/</code>目录下，这样就可以在终端使用 class-dump 命令了：class-dump -H <code>/Users/xxx/Payload/xxx.app</code> -o /Users/xxx/exportDir`了。</p>
+<p><img src="https://raw.githubusercontent.com/qq510304723/SourceFile/master/WX20211222-105825%402x.png"></p>
+<h3 id="Hopper-Disassembler工具安装和使用"><a href="#Hopper-Disassembler工具安装和使用" class="headerlink" title="Hopper Disassembler工具安装和使用"></a>Hopper Disassembler工具安装和使用</h3><p>Hopper Disassembler 是一个专门反编译 OC 程序的工具。官网：<a href="">http://www.hopperapp.com</a></p>
+<p>试用版有功能限制，30分钟退出一次，不能保存和导入反编译后的文件，不能动态调试等。</p>
+<p>打开 Hopper Disassembler，直接将xxx.app文件或者xxx.app里面的xxx可执行文件拖入，选择对应的 CPU 架构类型即可。</p>
+<p><img src="https://raw.githubusercontent.com/qq510304723/SourceFile/master/WX20211222-103959%402x.png"></p>
+<p><img src="https://raw.githubusercontent.com/qq510304723/SourceFile/master/WX20211222-103908%402x.png"></p>
+<p>右上角选择if(b)f(x):可以看到近似源码的伪代码，双击可以查看下一级代码</p>
+<p><img src="https://raw.githubusercontent.com/qq510304723/SourceFile/master/WX20211222-112647%402x.png"></p>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E8%8E%B7%E5%8F%96ipa"><span class="toc-text">1、获取ipa</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81class-dump%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="toc-text">2、class-dump工具安装和使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hopper-Disassembler%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="toc-text">Hopper Disassembler工具安装和使用</span></a></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2021/12/13/SwiftUI-%E4%B8%8E-UIKit-%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AE%80%E8%BF%B0/" rel="next" title="SwiftUI 与 UIKit 混合开发简述">
+          SwiftUI 与 UIKit 混合开发简述
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2021/12/31/RxSwift-%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%E5%B0%8F%E8%AE%A1/" rel="prev" title="RxSwift 核心逻辑小记">
+            RxSwift 核心逻辑小记
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>

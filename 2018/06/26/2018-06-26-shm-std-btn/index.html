@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="组件,UI组件," />
+  
+
+  
+    <meta name="description" content="UI组件-Button-WDStandardButton" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>UI组件-Button-WDStandardButton [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        UI组件-Button-WDStandardButton
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2018-06-26T01:20:57.000Z">
+        2018-06-26
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 5 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <p>标准按钮控件，全局适用</p>
+<span id="more"></span>
+
+<h2 id="尺寸-WDStdBtnSizeType"><a href="#尺寸-WDStdBtnSizeType" class="headerlink" title="尺寸 (WDStdBtnSizeType)"></a>尺寸 (WDStdBtnSizeType)</h2><h3 id="大-WDStdBtnSizeTypeBig"><a href="#大-WDStdBtnSizeTypeBig" class="headerlink" title="大 (WDStdBtnSizeTypeBig)"></a>大 (WDStdBtnSizeTypeBig)</h3><p>高度: 50</p>
+<p>宽度: 初始为距离屏幕两边<em>15/20</em> (视手机屏幕尺寸而定)，可以使用 <em>resizeToFitText</em> 调整为适应文字宽度</p>
+<p>最小宽度: 不限</p>
+<p>自适应文字宽度规则: 文字宽度两边各*+30*</p>
+<p>圆角: 5</p>
+<p>文字大小: 18</p>
+<p><img src="http://img.jokinryou.online/shm-std-btn-size-big.png" alt="shm-std-btn-size-big"></p>
+<h3 id="中-WDStdBtnSizeTypeMiddle"><a href="#中-WDStdBtnSizeTypeMiddle" class="headerlink" title="中 (WDStdBtnSizeTypeMiddle)"></a>中 (WDStdBtnSizeTypeMiddle)</h3><p>高度: 40</p>
+<p>宽度: 初始为距离屏幕两边<em>15/20</em> (视手机屏幕尺寸而定)，可以使用_resizeToFitText_调整为适应文字宽度</p>
+<p>最小宽度: 140</p>
+<p>自适应文字宽度规则: 文字宽度两边各*+30*</p>
+<p>圆角: 4</p>
+<p>文字大小: 16</p>
+<p><img src="http://img.jokinryou.online/shm-std-btn-size-mid.png" alt="shm-std-btn-size-mid"></p>
+<h3 id="小-WDStdBtnSizeTypeSmall"><a href="#小-WDStdBtnSizeTypeSmall" class="headerlink" title="小 (WDStdBtnSizeTypeSmall)"></a>小 (WDStdBtnSizeTypeSmall)</h3><p>高度: 26</p>
+<p>宽度: 初始为文字宽度左右各*+10* (自动宽度)</p>
+<p>最小宽度: 45</p>
+<p>自适应文字宽度规则: 文字宽度两边各*+10*</p>
+<p>圆角: 2.6</p>
+<p>文字大小: 14</p>
+<p><img src="http://img.jokinryou.online/shm-std-btn-size-small.png" alt="shm-std-btn-size-small"></p>
+<h2 id="基础色-WDStdBtnBaseColorType"><a href="#基础色-WDStdBtnBaseColorType" class="headerlink" title="基础色 (WDStdBtnBaseColorType)"></a>基础色 (WDStdBtnBaseColorType)</h2><p>基础色是按钮在normal状态下的颜色，同时用于按照不同的颜色策略，合成pressed和disabled状态的颜色</p>
+<p>默认: 品牌色</p>
+<h2 id="颜色策略-WDStdBtnColorSynScheme"><a href="#颜色策略-WDStdBtnColorSynScheme" class="headerlink" title="颜色策略 (WDStdBtnColorSynScheme)"></a>颜色策略 (WDStdBtnColorSynScheme)</h2><h3 id="主-WDStdBtnColorSynSchemeMajor"><a href="#主-WDStdBtnColorSynSchemeMajor" class="headerlink" title="主 (WDStdBtnColorSynSchemeMajor)"></a>主 (WDStdBtnColorSynSchemeMajor)</h3><p><img src="http://img.jokinryou.online/shm-std-btn-color-major.png" alt="shm-std-btn-color-major"></p>
+<h3 id="次-WDStdBtnColorSynSchemeMinor"><a href="#次-WDStdBtnColorSynSchemeMinor" class="headerlink" title="次 (WDStdBtnColorSynSchemeMinor)"></a>次 (WDStdBtnColorSynSchemeMinor)</h3><p><img src="http://img.jokinryou.online/shm-std-btn-color-minor.png" alt="shm-std-btn-color-minor"></p>
+<h3 id="灰-WDStdBtnColorSynSchemeGray"><a href="#灰-WDStdBtnColorSynSchemeGray" class="headerlink" title="灰 (WDStdBtnColorSynSchemeGray)"></a>灰 (WDStdBtnColorSynSchemeGray)</h3><p><img src="http://img.jokinryou.online/shm-std-btn-color-gray.png" alt="shm-std-btn-color-gray"></p>
+<h2 id="反色按钮"><a href="#反色按钮" class="headerlink" title="反色按钮"></a>反色按钮</h2><p>多用在深色背景下，尺寸根据 <em>WDStdBtnSizeType</em> 确定，有自己的颜色合成策略</p>
+<p><img src="http://img.jokinryou.online/shm-std-btn-color-inverse.png" alt="shm-std-btn-color-inverse"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="Protocol"><a href="#Protocol" class="headerlink" title="Protocol"></a>Protocol</h3><p>WDStdBtnColorConfig</p>
+<p>颜色配置协议，用于指定按钮颜色、文字颜色等</p>
+<p>WDStdBtnSizeConfig</p>
+<p>尺寸配置协议，用于指定按钮高度、宽度、圆角、文字尺寸、按钮是否自适应文字大小等</p>
+<h3 id="Enumeration"><a href="#Enumeration" class="headerlink" title="Enumeration"></a>Enumeration</h3><p>WDStdBtnColorSynScheme</p>
+<p>指定按钮各种状态颜色策略</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDStdBtnColorSynScheme) &#123;</span><br><span class="line">    WDStdBtnColorSynSchemeMajor = 111,</span><br><span class="line">    WDStdBtnColorSynSchemeMinor,</span><br><span class="line">    WDStdBtnColorSynSchemeGray,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>WDStdBtnSizeType</p>
+<p>指定按钮尺寸类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDStdBtnSizeType) &#123;</span><br><span class="line">    WDStdBtnSizeTypeBig = 999,</span><br><span class="line">    WDStdBtnSizeTypeMiddle,</span><br><span class="line">    WDStdBtnSizeTypeSmall,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>WDStdBtnBaseColorType</p>
+<p>指定按钮基础色</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDStdBtnBaseColorType) &#123;</span><br><span class="line">    WDStdBtnBaseColorBrand = 777,</span><br><span class="line">    WDStdBtnBaseColorSubLink,</span><br><span class="line">    WDStdBtnBaseColorSuccess,</span><br><span class="line">    WDStdBtnBaseColorVIP,</span><br><span class="line">    WDStdBtnBaseColorCaution,</span><br><span class="line">    WDStdBtnBaseColorYellow,</span><br><span class="line">    WDStdBtnBaseColorRedPacket,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h3><h4 id="WDStandardButton"><a href="#WDStandardButton" class="headerlink" title="WDStandardButton"></a>WDStandardButton</h4><h5 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h5><p>指定颜色策略、尺寸类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)buttonWithColorSynScheme:(WDStdBtnColorSynScheme)colorSynScheme sizeType:(WDStdBtnSizeType)sizeType;</span><br></pre></td></tr></table></figure>
+<p>指定基础色、颜色策略、尺寸类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)buttonWithBaseColorType:(WDStdBtnBaseColorType)baseColorType colorSynScheme:(WDStdBtnColorSynScheme)colorSynScheme sizeType:(WDStdBtnSizeType)sizeType;</span><br></pre></td></tr></table></figure>
+<p>反色按钮初始化方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)inverseButtonWithBaseColorName:(SMTColorName)baseColorName colorType:(WDStdBtnColorSynScheme)colorType sizeType:(WDStdBtnSizeType)sizeType;</span><br></pre></td></tr></table></figure>
+<p>以品牌色为基础色，使用指定的颜色策略生成的颜色配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (id &lt;WDStdBtnColorConfig&gt;)colorConfigWithColorSynScheme:(WDStdBtnColorSynScheme)colorSynScheme;</span><br></pre></td></tr></table></figure>
+
+<h5 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h5><p>使用自定义的颜色配置和尺寸配置初始化按钮</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithColorConfig:(id &lt;WDStdBtnColorConfig&gt;)colorConfig sizeConfig:(id &lt;WDStdBtnSizeConfig&gt;)sizeConfig;</span><br></pre></td></tr></table></figure>
+<p>自动调整按钮尺寸为适应文字大小，内边距、最小、最大宽度遵循初始化时指定的尺寸类型 (尺寸配置)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)resizeToFitText;</span><br></pre></td></tr></table></figure>
+<p>还原为按钮默认尺寸</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)restoreToDefaultSize;</span><br></pre></td></tr></table></figure>
+<p>指定新的颜色配置，刷新按钮</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)refreshWithColorConfig:(id&lt;WDStdBtnColorConfig&gt;)colorConfig;</span><br></pre></td></tr></table></figure>
+<p>当前按钮颜色配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id &lt;WDStdBtnColorConfig&gt;)buttonColorConfig;</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>可自定义子类，遵循 <em>WDStdBtnColorConfig</em> 或 <em>WDStdBtnSizeConfig</em> ，实现协议里定义的方法，用于构造自定义按钮</p>
+<p>参考工程中 <em>WDSelctOKBtnSizeConfig</em></p>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%BA%E5%AF%B8-WDStdBtnSizeType"><span class="toc-text">尺寸 (WDStdBtnSizeType)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7-WDStdBtnSizeTypeBig"><span class="toc-text">大 (WDStdBtnSizeTypeBig)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD-WDStdBtnSizeTypeMiddle"><span class="toc-text">中 (WDStdBtnSizeTypeMiddle)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F-WDStdBtnSizeTypeSmall"><span class="toc-text">小 (WDStdBtnSizeTypeSmall)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%89%B2-WDStdBtnBaseColorType"><span class="toc-text">基础色 (WDStdBtnBaseColorType)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E7%AD%96%E7%95%A5-WDStdBtnColorSynScheme"><span class="toc-text">颜色策略 (WDStdBtnColorSynScheme)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB-WDStdBtnColorSynSchemeMajor"><span class="toc-text">主 (WDStdBtnColorSynSchemeMajor)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%A1-WDStdBtnColorSynSchemeMinor"><span class="toc-text">次 (WDStdBtnColorSynSchemeMinor)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0-WDStdBtnColorSynSchemeGray"><span class="toc-text">灰 (WDStdBtnColorSynSchemeGray)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E8%89%B2%E6%8C%89%E9%92%AE"><span class="toc-text">反色按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Protocol"><span class="toc-text">Protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumeration"><span class="toc-text">Enumeration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class"><span class="toc-text">Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WDStandardButton"><span class="toc-text">WDStandardButton</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="toc-text">类方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="toc-text">实例方法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="toc-text">自定义</span></a></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2018/04/10/2018-04-10-AppStore-Privacy-Policy/" rel="next" title="AppStore Privacy Policy">
+          AppStore Privacy Policy
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2018/06/26/2018-06-26-shm-option-btn/" rel="prev" title="UI组件-Button-WDOptionButton">
+            UI组件-Button-WDOptionButton
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>

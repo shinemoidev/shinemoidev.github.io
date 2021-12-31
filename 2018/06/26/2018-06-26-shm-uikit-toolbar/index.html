@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="组件,UI组件," />
+  
+
+  
+    <meta name="description" content="UI组件-WDToolBar" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>UI组件-WDToolBar [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        UI组件-WDToolBar
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2018-06-26T06:05:30.000Z">
+        2018-06-26
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 4 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <p>常用于页面底部有一个或多个横向并排操作 (按钮样式)，也可用于页面任何位置</p>
+<p>注意，WDToolBar跟系统的UIToolbar无任何关系</p>
+<p>高度固定 <em>50</em> (自适应iPhone X时除外，但有效区域高度仍然为50)</p>
+<span id="more"></span>
+
+<h2 id="样式"><a href="#样式" class="headerlink" title="样式"></a>样式</h2><h3 id="一般样式"><a href="#一般样式" class="headerlink" title="一般样式"></a>一般样式</h3><p><img src="http://img.jokinryou.online/shm-toolbar-style-common.png"></p>
+<h3 id="强引导样式"><a href="#强引导样式" class="headerlink" title="强引导样式"></a>强引导样式</h3><p><img src="http://img.jokinryou.online/shm-toolbar-style-guide.png"></p>
+<h3 id="情感倾向样式"><a href="#情感倾向样式" class="headerlink" title="情感倾向样式"></a>情感倾向样式</h3><p><img src="http://img.jokinryou.online/shm-toolbar-style-emotional.png"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="Enumeration"><a href="#Enumeration" class="headerlink" title="Enumeration"></a>Enumeration</h3><p>WDToolBarPos</p>
+<p>toolBar位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDToolBarPos) &#123;</span><br><span class="line">    WDToolBarPosScreenBottom = 345, // toolBar在屏幕底部，自动适应iPhone X</span><br><span class="line">    WDToolBarPosOther,              // 默认值，toolBar在除屏幕底部外的任何位置</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>WDToolBarItemStatusIndicationType</p>
+<p>按钮状态标识类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDToolBarItemStatusIndicationType) &#123;</span><br><span class="line">    WDToolBarItemStatusIndicationDefault = 999, // icon、文字标识highlight状态和disable状态</span><br><span class="line">    WDToolBarItemStatusIndicationFull           // icon、文字、背景同时标识highlight状态和disable状态</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><em>WDToolBarItemStatusIndicationFull</em> 只用于 <em>强引导样式</em></p>
+<p>WDToolBarItemIconPos</p>
+<p>如果按钮中同时存在icon和text，指定 <em>icon相对于text</em> 的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, WDToolBarItemIconPos) &#123;</span><br><span class="line">    WDToolBarItemIconPosNone = 222,</span><br><span class="line">    WDToolBarItemIconPosUp,</span><br><span class="line">    WDToolBarItemIconPosLeft,</span><br><span class="line">    WDToolBarItemIconPosDown,</span><br><span class="line">    WDToolBarItemIconPosRight,</span><br><span class="line">    WDToolBarItemIconPosBack,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h3><h4 id="WDToolBarItem"><a href="#WDToolBarItem" class="headerlink" title="WDToolBarItem"></a>WDToolBarItem</h4><h5 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h5><p>tag，用于delegate中标识当前点击的是哪个item</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *tag;</span><br></pre></td></tr></table></figure>
+<p>iconName，如果有图片，指定图片的iconfont icon name。不支持使用UIImage，因为要在不同的按钮状态下改变icon颜色</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *iconName; // iconfont icon name</span><br></pre></td></tr></table></figure>
+<p>name，按钮文案</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *name;</span><br></pre></td></tr></table></figure>
+<p>enabled，按钮是否可点击，默认YES</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) BOOL enabled;</span><br></pre></td></tr></table></figure>
+<p>iconColor，normal状态下图标颜色，pressed和disabled状态颜色会自动生成</p>
+<p>默认 <em>SMTColorNameNoColorGray5</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) SMTColorName iconColor;</span><br></pre></td></tr></table></figure>
+<p>textColor，normal状态下文字颜色，pressed和disabled状态颜色会自动生成</p>
+<p>默认 <em>SMTColorNameNoColorGray5</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) SMTColorName textColor;</span><br></pre></td></tr></table></figure>
+<p>backgroundColor，normal状态下按钮背景色，pressed和disabled状态颜色会自动生成</p>
+<p>默认白色</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) SMTColorName backgroundColor;</span><br></pre></td></tr></table></figure>
+<p>iconPos，icon相对与文字的位置，支持上、下、左、右、后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) WDToolBarItemIconPos iconPos;</span><br></pre></td></tr></table></figure>
+<p>showLeftVerticalSeparator，是否显示按钮左边的灰色竖向分割线</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) BOOL showLeftVerticalSeparator;</span><br></pre></td></tr></table></figure>
+<p>statusIndicationType，如何标识按钮状态，具体参照枚举 <em>WDToolBarItemStatusIndicationType</em></p>
+<p>默认 <em>WDToolBarItemStatusIndicationDefault</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) WDToolBarItemStatusIndicationType statusIndicationType;</span><br></pre></td></tr></table></figure>
+
+<h4 id="WDToolBar"><a href="#WDToolBar" class="headerlink" title="WDToolBar"></a>WDToolBar</h4><h5 id="Property-1"><a href="#Property-1" class="headerlink" title="Property"></a>Property</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, weak) id &lt;WDToolBarDelegate&gt; delegate;</span><br></pre></td></tr></table></figure>
+
+<p>是否显示顶部阴影，默认YES</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, assign) BOOL showTopShadow;</span><br></pre></td></tr></table></figure>
+
+<h5 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h5><p>指定toolbarItems，不进行iPhone X自适应</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithToolBarItems:(NSArray&lt;WDToolBarItem *&gt; *)toolbarItems;</span><br></pre></td></tr></table></figure>
+<p>指定toolbarItems和toolBarPos，toolBarPos定义参考枚举 <em>WDToolBarPos</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithToolBarItems:(NSArray&lt;WDToolBarItem *&gt; *)toolbarItems toolBarPos:(WDToolBarPos)toolBarPos;</span><br></pre></td></tr></table></figure>
+<p>使用一堆新的toolBarItems刷新toolBar</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)refreshWithToolBarItems:(NSArray&lt;WDToolBarItem *&gt; *)toolBarItems;</span><br></pre></td></tr></table></figure>
+<p>设置enabled状态，若index &lt; 0，则设置全部</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setItemEnabled:(BOOL)enabled atIndex:(NSInteger)index;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Delegate"><a href="#Delegate" class="headerlink" title="Delegate"></a>Delegate</h3><h4 id="WDToolBarDelegate"><a href="#WDToolBarDelegate" class="headerlink" title="WDToolBarDelegate"></a>WDToolBarDelegate</h4><p>toolBar被点击时的回调</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)toolBar:(WDToolBar *)toolBar itemDidPressed:(WDToolBarItem *)toolBarItem;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B7%E5%BC%8F"><span class="toc-text">样式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%A0%B7%E5%BC%8F"><span class="toc-text">一般样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%BC%95%E5%AF%BC%E6%A0%B7%E5%BC%8F"><span class="toc-text">强引导样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E6%84%9F%E5%80%BE%E5%90%91%E6%A0%B7%E5%BC%8F"><span class="toc-text">情感倾向样式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumeration"><span class="toc-text">Enumeration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class"><span class="toc-text">Class</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WDToolBarItem"><span class="toc-text">WDToolBarItem</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Property"><span class="toc-text">Property</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WDToolBar"><span class="toc-text">WDToolBar</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Property-1"><span class="toc-text">Property</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="toc-text">实例方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delegate"><span class="toc-text">Delegate</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WDToolBarDelegate"><span class="toc-text">WDToolBarDelegate</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2018/06/26/2018-06-26-shm-option-btn/" rel="next" title="UI组件-Button-WDOptionButton">
+          UI组件-Button-WDOptionButton
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2018/06/27/2018-06-27-shm-segmentedview/" rel="prev" title="UI组件-WDSegmentedView">
+            UI组件-WDSegmentedView
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>

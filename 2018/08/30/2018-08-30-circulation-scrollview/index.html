@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="组件,UI组件," />
+  
+
+  
+    <meta name="description" content="UI组件-WDCirculationScrollview" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>UI组件-WDCirculationScrollview [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        UI组件-WDCirculationScrollview
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2018-08-30T07:14:17.000Z">
+        2018-08-30
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI%E7%BB%84%E4%BB%B6/" rel="tag">UI组件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag">组件</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 4 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <p>轮播图片显示控件</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WDCirculationScrollView *circuScrollView = [WDCirculationScrollView alloc] init];</span><br><span class="line">[self.contentView addSubview:circuScrollView];</span><br><span class="line">circuScrollView.frame = ...</span><br><span class="line">circuScrollView.imageUrls = ...</span><br></pre></td></tr></table></figure>
+<p>支持initWithFrame,setFrame,autolayout布局</p>
+<span id="more"></span>
+
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSArray&lt;NSString *&gt; *imageUrls;</span><br><span class="line"></span><br><span class="line">//刷新pageControl等</span><br><span class="line">@property (nonatomic, copy) void(^pageChangedBlock)(NSInteger currentPage, NSInteger numOfPages);</span><br><span class="line">//点击图片</span><br><span class="line">@property (nonatomic, copy) void(^selectAImageBlock)(NSInteger index);</span><br><span class="line"></span><br><span class="line">//个性化滚动imageview</span><br><span class="line">@property (nonatomic, copy) void(^customerAImageFrame)(UIImageView *imageView, NSInteger index);</span><br><span class="line"></span><br><span class="line">//自动滚动时使用</span><br><span class="line">@property (nonatomic, copy) void(^startOrPauseTimerBlock)(BOOL canStart);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="imageUrls"><a href="#imageUrls" class="headerlink" title="imageUrls"></a>imageUrls</h4><p>当然是指要显示的图片的网络地址列表</p>
+<h4 id="pageChangedBlock"><a href="#pageChangedBlock" class="headerlink" title="pageChangedBlock"></a>pageChangedBlock</h4><p>回调告诉外部，图片个数或者当前图片变化。外部界面进行处理，例如更新pagecontrol的当前页和页面个数。</p>
+<h4 id="selectAImageBlock"><a href="#selectAImageBlock" class="headerlink" title="selectAImageBlock"></a>selectAImageBlock</h4><p>点击某张图片回调，外部进行页面跳转等。</p>
+<h4 id="customerAImageFrame"><a href="#customerAImageFrame" class="headerlink" title="customerAImageFrame"></a>customerAImageFrame</h4><p>个性化图片展示，比如 设置图片展示的大小，圆角，contentMode等(默认 UIViewContentModeScaleAspectFill –铺满裁剪)</p>
+<h4 id="startOrPauseTimerBlock"><a href="#startOrPauseTimerBlock" class="headerlink" title="startOrPauseTimerBlock"></a>startOrPauseTimerBlock</h4><p>停止和启动定时器回调。由于在图片onDrag的时候需要暂停，onDragEnd的时候继续timer,所以需要自动轮播的需要设置该回调去启动和暂停timer</p>
+<h4 id="方法-scrollToNext"><a href="#方法-scrollToNext" class="headerlink" title="方法:scrollToNext"></a>方法:scrollToNext</h4><p>外部调用该方法表示滚动到下一个。比如自动轮播时，定时调用来自动翻到下一张。</p>
+<h2 id="关于属性注入的感想"><a href="#关于属性注入的感想" class="headerlink" title="关于属性注入的感想"></a>关于属性注入的感想</h2><p>以需要(frame, imageUrls, pageChangedBlock, selectAImageBlock)四个参数为例：<br>如果用构造函数来注入这些参数。因为都是可选的，我们要写以下构造函数来实现：<br>initWithFrame:<br>initWithImageUrls:<br>initWithPageChangedBlock:<br>initWithSelectAImageBlock:<br>initWithFrame: imageUrls: pageChangedBlock: selectAImageBlock:<br>initWithFrame: imageUrls: pageChangedBlock:<br>initWithFrame: imageUrls:<br>initWithFrame: pageChangedBlock:<br>initWithFrame: pageChangedBlock: selectAImageBlock:<br>initWithFrame: imageUrls: selectAImageBlock:<br>…<br>等 C(4,0) + C(4,1) + C(4,2) + C(4,3) + C(4,4) = 1 + 4 + 6 + 4 + 1 = 16 个方法满足。4参数个就需要16个之多。</p>
+<p><em>但是用属性方式 这16个都是可以省的。</em></p>
+<p>这里不得不提下swift构造函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">init(frame:CGRect = .zero, imageUrls:Array&lt;String&gt;? = nil, pageChangedBlock:((_ currentPage:Int, _ numOfPages:Int) -&gt; Void)? = nil, selectAImageBlock:((_ index:Int) -&gt; Void)? = nil) &#123;</span><br><span class="line">        super.init()</span><br></pre></td></tr></table></figure>
+<p>只要一个就够了。</p>
+<p>可以这样用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(imageUrls: nil)</span><br></pre></td></tr></table></figure>
+<p>也可以这样用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(imageUrls: nil, selectAImageBlock: nil)</span><br></pre></td></tr></table></figure>
+<p>只是不能换着顺序用：<br>比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let circuScrollView = WDCirculationScrollView(selectAImageBlock: nil, imageUrls: nil)</span><br></pre></td></tr></table></figure>
+<p>是不行的。</p>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7"><span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#imageUrls"><span class="toc-text">imageUrls</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pageChangedBlock"><span class="toc-text">pageChangedBlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#selectAImageBlock"><span class="toc-text">selectAImageBlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#customerAImageFrame"><span class="toc-text">customerAImageFrame</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#startOrPauseTimerBlock"><span class="toc-text">startOrPauseTimerBlock</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95-scrollToNext"><span class="toc-text">方法:scrollToNext</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%B1%9E%E6%80%A7%E6%B3%A8%E5%85%A5%E7%9A%84%E6%84%9F%E6%83%B3"><span class="toc-text">关于属性注入的感想</span></a>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2018/08/30/2018-08-30-wdpagecontrol/" rel="next" title="UI组件-WDPageControl">
+          UI组件-WDPageControl
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2018/09/20/2018-09-20-iOS-ReactiveObjc-1/" rel="prev" title="iOS函数响应式编程(一)">
+            iOS函数响应式编程(一)
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>
