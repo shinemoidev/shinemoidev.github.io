@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="" />
+  
+
+  
+    <meta name="description" content="工具—SHMAaceHooker" />
+  
+  
+  <!-- <link rel="icon" type="image/x-icon" href="/logo.png"> -->
+  <title>工具—SHMAaceHooker [ 讯盟 iOS  ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <!-- <img class="avatar" src="https://shinemoidev.github.io/images/logo.png"> -->
+    <span class="title">讯盟 iOS </span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        工具—SHMAaceHooker
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2022-02-24T01:41:08.000Z">
+        2022-02-24
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 10 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>当前项目中，非常多的请求都是由 XXXClient 类发起，通过长链接获取数据之后，再由 ProtocolPacker 进行自定义解包，最终获取到我们需要的数据格式供业务使用。</p>
+<p>在这个数据交互的过程中，测试无法通过抓包获取到请求的参数及返回结果，当发生问题时，无法快速定位问题，只能由客户端开发人员进行调试，才能得到请求时具体的数据往来，导致问题解决的效率比较低。</p>
+<p>这个工具旨在能将数据的交互可视化，使问题快速暴露，并得以解决。</p>
+<span id="more"></span>
+
+<h1 id="成果展示"><a href="#成果展示" class="headerlink" title="成果展示"></a>成果展示</h1><p><a target="_blank" rel="noopener" href="https://git.shinemo.com/projects/SHMPODSPECS/repos/SHMAaceHooker">SHMAaceHooker 源码</a></p>
+<img src="/2022/02/24/%E5%B7%A5%E5%85%B7%E2%80%94%E2%80%94SHMAaceHooker/acehook.jpg" class="" title="这是一张图片">
+
+<h1 id="期望目标"><a href="#期望目标" class="headerlink" title="期望目标"></a>期望目标</h1><ul>
+<li>获取 ace 请求时的参数</li>
+<li>获取 ace 请求之后的结果</li>
+<li>数据可视化。</li>
+</ul>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ul>
+<li>通过 Aspect 对同步请求方法进行 Hook，得到请求参数及结果。</li>
+<li>结合 Aspect &amp; BlockHook 对异步方法进行 Hook，得到请求参数及结果。</li>
+</ul>
+<h1 id="具体实施"><a href="#具体实施" class="headerlink" title="具体实施"></a>具体实施</h1><h2 id="准备知识"><a href="#准备知识" class="headerlink" title="准备知识"></a>准备知识</h2><h4 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h4><p>在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面的编程。</p>
+<p>有了这个思想作为方向之后，接下来我们就需要解决 <strong>切入点</strong> 和 <strong>切片逻辑</strong> 这两个问题了。</p>
+<ul>
+<li><strong>切入点</strong></li>
+</ul>
+<p>XXXClient 及 XXXPack 都是由工具 AutoGen 生成的模板代码：</p>
+<ol>
+<li>XXXClient：处理所有的请求逻辑。都继承于 AaceCaller 类。</li>
+<li>XXXPack：自定义的数据解包工具。</li>
+</ol>
+<p>在 Client 类的请求方法结束之后，数据也得到了 Pack 的解包，这个时候，我们就可以获取到请求的参数及返回的数据。</p>
+<ul>
+<li><strong>切片逻辑</strong></li>
+</ul>
+<p>具体的获取数据的逻辑，需要分为 同步请求 和 异步请求两种处理。后面会展开介绍。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>利用 CocoaPods 接入 Aspect 及 BlockHook。</li>
+<li>获取一个类的所有子类工具方法。</li>
+<li>获取一个类的所有方法。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100-SW1">Type Encodings 类型编码</a></p>
+<h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><ol>
+<li>先找到 <strong>AaceCaller</strong> 的所有子类，也就是项目中所有的 XxxClient。</li>
+<li>遍历所有 XxxClient 类，并找出其所有的方法。</li>
+<li>删选过滤。找到其 同步请求 和 异步请求 的方法。</li>
+<li>针对不同的方法，执行不同的 Hook 逻辑。</li>
+</ol>
+<h3 id="同步请求"><a href="#同步请求" class="headerlink" title="同步请求"></a>同步请求</h3><p>请求返回的结果，是通过指针赋值的方式，直接传递给业务层，所以，在获取请求参数时，能获取到的是一个内部结构 NSConcreateValue 的对象，其实这就是一个对象的指针。我们需要做的就是根据这个指针将对应的数据对象取出。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">+ (void)_forSyncRequest:(Class)cls selName:(NSString *)selName &#123;</span><br><span class="line">    SEL sel = NSSelectorFromString(selName);</span><br><span class="line">    </span><br><span class="line">    [cls aspect_hookSelector:sel withOptions:AspectPositionAfter usingBlock:^(id&lt;AspectInfo&gt; aspectInfo) &#123;</span><br><span class="line">        NSObject *instance = aspectInfo.instance;</span><br><span class="line">        NSInvocation *invocation = aspectInfo.originalInvocation;</span><br><span class="line">        NSArray *arguments = aspectInfo.arguments;</span><br><span class="line">        </span><br><span class="line">        NSMethodSignature *methodSignature = invocation.methodSignature;</span><br><span class="line">        </span><br><span class="line">        NSMutableArray *requestArguments = [[NSMutableArray alloc] init];</span><br><span class="line">        NSMutableArray *responseArray = [[NSMutableArray alloc] init];</span><br><span class="line">        </span><br><span class="line">        for (int i = 0; i &lt; arguments.count; i++) &#123;</span><br><span class="line">            NSObject *argument = arguments[i];</span><br><span class="line">            </span><br><span class="line">            // 前两个参数分别是 实例对象 和 Sel，为默认参数，这里取得时候直接跳过。</span><br><span class="line">            // 后面的参数则是调用方法时，传入的参数。</span><br><span class="line">            const char *type = [methodSignature getArgumentTypeAtIndex:2 + i];</span><br><span class="line">            NSString *argumentType = [NSString stringWithCString:type encoding:NSUTF8StringEncoding];;</span><br><span class="line">                        </span><br><span class="line">            // TODO: 判断参数类型，存储请求参数。</span><br><span class="line">                </span><br><span class="line">            if ([argumentType isEqualToString:@&quot;^@&quot;]) &#123;</span><br><span class="line">                // 指向对象的指针。 针对client，这个一般都是我们传入用来获取返回值的对象指针</span><br><span class="line">                NSValue *value = (NSValue *)argument;</span><br><span class="line">                </span><br><span class="line">                void **aaa = value.pointerValue;</span><br><span class="line">                </span><br><span class="line">                NSObject *use = (__bridge NSObject *)(*aaa);</span><br><span class="line">                </span><br><span class="line">                NSArray *array = [self findIvars:use.class];</span><br><span class="line">                </span><br><span class="line">                if (use) &#123;</span><br><span class="line">                    [responseArray addObject:use];</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    [responseArray addObject:@&quot;instance empty&quot;];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">            ...省略判断逻辑代码</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 自定义请求对象</span><br><span class="line">        SHMAaceHookModel *result = [[SHMAaceHookModel alloc] init];</span><br><span class="line">        result.clientName = NSStringFromClass(cls);</span><br><span class="line">        result.selName = selName;</span><br><span class="line">        result.arguments = requestArguments;</span><br><span class="line">        result.responses = responseArray;</span><br><span class="line">        </span><br><span class="line">        [[SHMAaceHookCache sharedCache] saveHookResult:result];</span><br><span class="line">        </span><br><span class="line">    &#125; error:NULL];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h3><p>Aspect hook 方法之后，获取到 block 对象，接着用 BlockHook 对 block 进行拦截，在 block 执行完成之后，我们获取其中的参数，也即为我们需要的请求数据结果。</p>
+<p>根据获取到的参数的类型编码确定参数的类型，并根据类型作相应的解析，得到我们需要的结果数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">+ (void)_forAsyncRequest:(Class)cls selName:(NSString *)selName &#123;</span><br><span class="line">    SEL sel = NSSelectorFromString(selName);</span><br><span class="line">    </span><br><span class="line">    [cls aspect_hookSelector:sel withOptions:AspectPositionBefore usingBlock:^(id&lt;AspectInfo&gt; aspectInfo) &#123;</span><br><span class="line">        NSObject *instance = aspectInfo.instance;</span><br><span class="line">        NSInvocation *invocation = aspectInfo.originalInvocation;</span><br><span class="line">        NSArray *arguments = aspectInfo.arguments;</span><br><span class="line">        </span><br><span class="line">        NSMethodSignature *methodSignature = invocation.methodSignature;</span><br><span class="line">        </span><br><span class="line">        NSMutableArray *requestArguments = [[NSMutableArray alloc] init];</span><br><span class="line">        NSMutableArray *responseArray = [[NSMutableArray alloc] init];</span><br><span class="line">        </span><br><span class="line">        [aspectInfo.originalInvocation retainArguments];</span><br><span class="line">        </span><br><span class="line">        for (int i = 0; i &lt; arguments.count; i++) &#123;</span><br><span class="line">            NSObject *argument = arguments[i];</span><br><span class="line">            </span><br><span class="line">            // 前两个参数分别是 实例对象 和 Sel，为默认参数，这里取得时候直接跳过。</span><br><span class="line">            // 后面的参数则是调用方法时，传入的参数。</span><br><span class="line">            const char *type = [methodSignature getArgumentTypeAtIndex:2 + i];</span><br><span class="line">            NSString *argumentType = [NSString stringWithUTF8String:type];</span><br><span class="line">            </span><br><span class="line">            Class blockCls = NSClassFromString(@&quot;NSBlock&quot;);</span><br><span class="line">            if ([argument isKindOfClass:blockCls]) &#123;</span><br><span class="line">                __unsafe_unretained id block = argument;</span><br><span class="line">                </span><br><span class="line">                [block block_interceptor:^(BHInvocation * _Nonnull invocation, IntercepterCompletion  _Nonnull completion) &#123;</span><br><span class="line">                    completion();</span><br><span class="line">                    </span><br><span class="line">                    for (int i = 1; i &lt; invocation.methodSignature.numberOfArguments; i++) &#123;</span><br><span class="line"></span><br><span class="line">                        const char *argType = [invocation.methodSignature getArgumentTypeAtIndex:i];</span><br><span class="line">                        NSString *argumentType = [NSString stringWithCString:argType encoding:NSUTF8StringEncoding];</span><br><span class="line"></span><br><span class="line">                        NSLog(@&quot;aace async hook ======= argumentType = %@&quot;, argumentType);</span><br><span class="line"></span><br><span class="line">                        ...省略判断逻辑代码</span><br><span class="line">                        if ([argumentType hasPrefix:@&quot;@\&quot;NS&quot;]) &#123;</span><br><span class="line">                            // oc 对象</span><br><span class="line">                            void *obj;</span><br><span class="line">                            [invocation getArgument:&amp;obj atIndex:i];</span><br><span class="line"></span><br><span class="line">                            NSObject *object = (__bridge NSObject *)obj;</span><br><span class="line"></span><br><span class="line">                            if (object) &#123;</span><br><span class="line">                                [responseArray addObject:object];</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    // 异步请求需要等待 block 结束后存储</span><br><span class="line">                    SHMAaceHookModel *result = [[SHMAaceHookModel alloc] init];</span><br><span class="line">                    result.clientName = NSStringFromClass(cls);</span><br><span class="line">                    result.selName = selName;</span><br><span class="line">                    result.arguments = requestArguments;</span><br><span class="line">                    result.responses = responseArray;</span><br><span class="line">                    </span><br><span class="line">                    [[SHMAaceHookCache sharedCache] saveHookResult:result];</span><br><span class="line">                &#125;];</span><br><span class="line">                </span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                if (argument) &#123;</span><br><span class="line">                    [requestArguments addObject:argument];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125; error:NULL];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h3><p><strong>SHMAaceHookModel：请求的模型</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@interface SHMAaceHookModel : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy) NSString *clientName;</span><br><span class="line">@property (nonatomic, copy) NSString *selName;</span><br><span class="line">@property (nonatomic, copy) NSArray *arguments;</span><br><span class="line">@property (nonatomic, copy) NSArray *responses;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p><strong>SHMAaceHookCache：收集请求模型的管理者</strong></p>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%90%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-text">成果展示</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%9F%E6%9C%9B%E7%9B%AE%E6%A0%87"><span class="toc-text">期望目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E6%96%BD"><span class="toc-text">具体实施</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-text">准备知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AOP"><span class="toc-text">AOP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%96%BD"><span class="toc-text">实施</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82"><span class="toc-text">同步请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82"><span class="toc-text">异步请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86"><span class="toc-text">数据收集</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<!--
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+  <img src="https://kevinofneu-blog-static.oss-cn-beijing.aliyuncs.com/static/2018-12-10-qrcode_for_gh_ffacf5722095_258.jpg" alt="Running Geek" style="margin: auto; display: block;"/>
+
+  <div style="margin: auto; text-align: center; font-size: 0.8em; color: grey;">老铁们关注走一走，不迷路</div>
+  
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2022/02/18/iOS%E5%BA%95%E5%B1%82%E5%88%9D%E7%AA%A5%E2%80%94NSNotificationCenter/" rel="next" title="iOS底层初窥—NSNotificationCenter">
+          iOS底层初窥—NSNotificationCenter
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+      </div>
+    </div>
+  
+
+-->
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://shinemoidev.github.io/">首页</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>
